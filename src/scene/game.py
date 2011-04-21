@@ -11,13 +11,14 @@ from pywaz.mixer.bgm import BGM
 from pywaz.scene.manager import SceneManager
 from pywaz.scene.abstractscene import Scene
 
+from main.world import World
 
 class GameScene(Scene):
     def ready(self, *args, **kwargs):
-        pass
+        self.world = World()
     def update(self):
         super(GameScene, self).update()
-        pass
     def draw(self):
-        return super(GameScene, self).draw()
+        rect = self.world.draw()
+        return rect
         

@@ -1,7 +1,11 @@
-#Sun Apr 17 16:18:37 JST 2011
+#Wed Apr 20 14:32:02 JST 2011
 eclipse.preferences.version=1
 encoding//src/main.py=utf-8
+encoding//src/main/panel.py=utf-8
+encoding//src/main/roads.py=utf-8
+encoding//src/main/world.py=utf-8
 encoding//src/pywaz/scene/abstractscene.py=utf-8
 encoding//src/pywaz/sprite/image.py=utf-8
 encoding//src/scene/game.py=utf-8
+encoding//src/scene/logo.py=utf-8
 encoding//src/settings/__init__.py=utf-8

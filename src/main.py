@@ -12,6 +12,7 @@ from pywaz.core.game import Game
 from pywaz.scene.abstractscene import Scene
 from pywaz.device.key import Key
 
+from scene.logo import *
 from scene.game import *
 
 def main():
@@ -19,8 +20,11 @@ def main():
     pygame.init() # pygameの初期化
     
     game = Game()
-    game.get_scene_manager().set_scenes({'game':GameScene(), })
-    game.get_scene_manager().change_scene('game',False,True)
+    game.get_scene_manager().set_scenes({'logo':LogoScene(), 'game':GameScene(), })
+    if settings.DEBUG:        
+        game.get_scene_manager().change_scene('game')
+    else:
+        game.get_scene_manager().change_scene('logo')
     while 1:
         game._clock.tick(settings.FPS)
         Key.poll()

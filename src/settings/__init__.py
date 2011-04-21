@@ -3,14 +3,23 @@
 #    Created on 2011/02/14
 #    Created by giginet
 #
-DEBUG = False
+##########################
+#Global Settings         #
+##########################
+
 
 SCREENCAPTION = "City"
-SCREENWIDTH = 800
-SCREENHEIGHT = 600
-
-PANELSIZE = 20
-STAGE_WIDTH = 32
-STAGE_HEIGHT = 28
-STAGE_OFFSET = (20,20)
+DEBUG = True
+SCREENWIDTH = 960
+SCREENHEIGHT = 540
 FRAMERATE = FPS = 24
+
+###########################
+#Game Settings            #
+###########################
+STAGE_WIDTH = 25
+STAGE_HEIGHT = 23
+
+PANELSIZE = 50
+ROOTX = 440
+ROOTY = -10
