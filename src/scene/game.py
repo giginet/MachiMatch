@@ -14,11 +14,13 @@ from pywaz.scene.abstractscene import Scene
 from main.world import World
 
 class GameScene(Scene):
+    BACKGROUND = (153,255,255)
     def ready(self, *args, **kwargs):
         self.world = World()
     def update(self):
         super(GameScene, self).update()
     def draw(self):
+        super(GameScene, self).draw()
         rect = self.world.draw()
         return rect
         

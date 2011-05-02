@@ -3,6 +3,9 @@
 #    Created on 2011/02/11
 #    Created by giginet
 #
+import pygame
+import settings
+
 from pywaz.sprite.image import Image
 from pywaz.sprite import OrderedUpdates
 from pywaz.core.game import Game
@@ -21,6 +24,7 @@ class Scene(object):
         self.sprites.update(*args, **kwargs)
     
     def draw(self, surface=Game.get_screen()):
+        pygame.draw.rect(surface, self.BACKGROUND, (0, 0, settings.SCREENWIDTH, settings.SCREENHEIGHT))
         update_rect = []
         update_rect += self.sprites.draw(surface)
         return update_rect
