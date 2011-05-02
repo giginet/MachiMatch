@@ -6,13 +6,20 @@
 
 import pygame
 import settings
-from panel import Panel, Territory
+from pywaz.core.game import Game
+from ground import Ground, Territory
+from player import Player
 from pywaz.sprite import OrderedUpdates
 
 class World(object):
+    u"""マップを管理するクラス"""
     def __init__(self, *args, **kwargs):
-        self.generate_stage()
-    def generate_stage(self):
+        self._generate_stage()
+        self.players = OrderedUpdates()
+        for n in xrange(0,1):
+            self.players.add(Player(0))
+    def _generate_stage(self):
+        u"""ステージを生成する"""
         self._map = []
         self.panels = OrderedUpdates()
         for y in xrange(settings.STAGE_HEIGHT):
@@ -21,16 +28,16 @@ class World(object):
                 if y < 4:
                     panel = Territory(x, y, 1)
                 else:
-                    panel = Panel(x, y)
+                    panel = Ground(x, y)
                 column.append(panel)
                 self.panels.add(panel)
             self._map.append(column)
     def draw(self):
-        for p in self.panels:
-            p.x = settings.ROOTX - p.point.y*30 + p.point.x*30
-            p.y = settings.ROOTY + p.point.x*15 + p.point.y*15
-            p.draw()
+        u"""マップを描画する"""
+        self.panels.draw(Game.get_screen())
+        self.players.draw(Game.get_screen())
         return pygame.rect.Rect(settings.ROOTY, settings.ROOTX-settings.STAGE_HEIGHT*20, 
                                 settings.STAGE_HEIGHT*20, settings.STAGE_WIDTH*20)
     def update(self):
-        pass
+        for player in self.players:
+            player.update()

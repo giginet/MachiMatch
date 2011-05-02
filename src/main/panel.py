@@ -3,36 +3,34 @@
 #    Created on 2011/04/20
 #    Created by giginet
 #
-
-from pywaz.sprite.image import Image
+import settings
+from pywaz.core.game import Game
+from pywaz.sprite.animation import Animation, AnimationInfo
 from pywaz.utils.vector import Vector
 
-class Panel(Image):
-    u"""Panelクラス"""
-    NODE = 0
-    IMAGEPATH = u"../resources/image/main/chips/grass.png"
+class Panel(Animation):
+    u"""
+        パネルクラス。マップ上に存在するもの全てのスーパークラス
+        マップ上に存在するものは全てpointというVectorクラスオブジェクトを持つ。
+        point(0,0)が画面右上。そこから左下方向にy軸、右下方向にx軸
+        抽象クラスなのでインスタンス化してはいけない
+    """
+    IMAGEPATH = None
+    MAXFRAME = 1
     def __init__(self, x, y):
         self.point = Vector(x, y)
-        #道がつながっているかどうかを2進数表記で保持する
-        #上右下左=1111
-        self.node = int(str(self.NODE), 2)
-        super(Panel, self).__init__(self.IMAGEPATH)
-    @property
-    def up(self):
-        return self.node & 8
-    @property
-    def right(self):
-        return self.node & 4
-    @property
-    def down(self):
-        return self.node & 2
-    @property
-    def left(self):
-        return self.node & 1    
-class Territory(Panel):
-    u"""領土クラス"""
-    NODE = 1111
-    IMAGEPATH = u"../resources/image/main/chips/ground.png"
-    def __init__(self, x, y, owner):
-        super(Territory, self).__init__(x, y)
-        self.owner = owner
+        super(Panel, self).__init__(self.IMAGEPATH, AnimationInfo(0, 0, self.MAXFRAME, settings.PANELSIZE, settings.PANELSIZE, 1))
+    def draw(self, surface=Game.get_screen()):
+        if self.point.x < 0:
+            self.point.x = 0
+        elif self.point.x >= settings.STAGE_WIDTH:
+            self.point.x = settings.STAGE_WIDTH-1
+        if self.point.y < 0:
+            self.point.y = 0
+        elif self.point.y >= settings.STAGE_HEIGHT:
+            self.point.y = settings.STAGE_HEIGHT-1
+        self.x = settings.ROOTX - self.point.y*30 + self.point.x*30
+        self.y = settings.ROOTY + self.point.x*15 + self.point.y*15
+        super(Panel, self).draw(surface)
+    def update(self):
+        raise NotImplementedError

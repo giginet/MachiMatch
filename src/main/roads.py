@@ -8,7 +8,7 @@ from main.panel import Panel
 
 class Road(Panel):
     def __init__(self, x, y): 
-        angle = 0
+        self.angle = 0
         super(Road, self).__init__(x, y)
     def rotate(self):
         pass

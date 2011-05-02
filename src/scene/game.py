@@ -18,6 +18,7 @@ class GameScene(Scene):
     def ready(self, *args, **kwargs):
         self.world = World()
     def update(self):
+        self.world.update()
         super(GameScene, self).update()
     def draw(self):
         super(GameScene, self).draw()
