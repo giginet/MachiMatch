@@ -11,6 +11,8 @@ from ground import Ground, Territory
 from player import Player
 from pywaz.sprite import OrderedUpdates
 
+from main.roads import LShapeRoad
+
 class World(object):
     u"""マップを管理するクラス"""
     def __init__(self, *args, **kwargs):
@@ -41,3 +43,7 @@ class World(object):
     def update(self):
         for player in self.players:
             player.update()
+            p = player.poll()
+            if p != 0:
+                road = LShapeRoad(1, 1)
+                road.rotate(p)

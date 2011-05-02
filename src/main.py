@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#    Created on 2011/05/03
+#    Created on 2011/04/20
 #    Created by giginet
 #
 import pygame

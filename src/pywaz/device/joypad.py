@@ -11,6 +11,7 @@ class JoyPad(Singleton):
     sticks = []
     
     def __init__(self):
+        pygame.joystick.init()
         for id in xrange(pygame.joystick.get_count()):
             joy = pygame.joystick.Joystick(id)
             joy.init()
