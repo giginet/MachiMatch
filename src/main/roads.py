@@ -30,13 +30,23 @@ class Road(Ground):
             self.angle = (self.angle+3)%4
             self.node = (self.node & 7) << 1 | (self.node & 8) >> 3
 class LShapeRoad(Road): 
-    NODE = 1100
-    IMAGEPATH = "../resources/image/main/chips/grass.png"
-class FlipLShapeRoad(Road): 
-    NODE = 1001
+    NODE = "1001"
+    IMAGEPATH = "../resources/image/main/roads/LShape.png"
+    def rotate(self, deg):
+        super(LShapeRoad, self).rotate(deg)
+        self.ainfo.frame = self.angle
 class IShapeRoad(Road): 
-    NODE = 1010
+    IMAGEPATH = "../resources/image/main/roads/IShape.png"
+    NODE = "0101"
+    def rotate(self, deg):
+        super(IShapeRoad, self).rotate(deg)
+        self.ainfo.frame = self.angle%2
 class TShapeRoad(Road): 
-    NODE = 0111
+    IMAGEPATH = "../resources/image/main/roads/TShape.png"
+    NODE = "0111"
+    def rotate(self, deg):
+        super(TShapeRoad, self).rotate(deg)
+        self.ainfo.frame = self.angle
 class CrossRoad(Road): 
-    NODE = 1111
+    IMAGEPATH = "../resources/image/main/roads/Cross.png"
+    NODE = "1111"

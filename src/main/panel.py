@@ -20,6 +20,7 @@ class Panel(Animation):
     def __init__(self, x, y):
         self.point = Vector(x, y)
         super(Panel, self).__init__(self.IMAGEPATH, AnimationInfo(0, 0, self.MAXFRAME, settings.PANELSIZE, settings.PANELSIZE, 1))
+        self.animation_enable = False
     def draw(self, surface=Game.get_screen()):
         if self.point.x < 0:
             self.point.x = 0
@@ -29,8 +30,8 @@ class Panel(Animation):
             self.point.y = 0
         elif self.point.y >= settings.STAGE_HEIGHT:
             self.point.y = settings.STAGE_HEIGHT-1
-        self.x = settings.ROOTX - self.point.y*30 + self.point.x*30
-        self.y = settings.ROOTY + self.point.x*15 + self.point.y*15
+        self.x = settings.ROOTX - self.point.y*37 + self.point.x*37
+        self.y = settings.ROOTY + self.point.x*19 + self.point.y*19
         super(Panel, self).draw(surface)
     def update(self):
         raise NotImplementedError

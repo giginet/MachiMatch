@@ -18,32 +18,52 @@ class World(object):
     def __init__(self, *args, **kwargs):
         self._generate_stage()
         self.players = OrderedUpdates()
-        for n in xrange(0,1):
+        self.player_count = 1
+        for n in xrange(0,self.player_count):
             self.players.add(Player(0))
     def _generate_stage(self):
         u"""ステージを生成する"""
         self._map = []
-        self.panels = OrderedUpdates()
-        for y in xrange(settings.STAGE_HEIGHT):
-            column = []
-            for x in xrange(settings.STAGE_WIDTH):
+        for x in xrange(settings.STAGE_WIDTH):
+            row = []
+            for y in xrange(settings.STAGE_HEIGHT):
                 if y < 4:
                     panel = Territory(x, y, 1)
                 else:
                     panel = Ground(x, y)
-                column.append(panel)
-                self.panels.add(panel)
-            self._map.append(column)
+                row.append(panel)
+            self._map.append(row)
+    def get_panel_on(self, point):
+        x = point[0]
+        y = point[1]
+        return self._map[x][y]
     def draw(self):
         u"""マップを描画する"""
-        self.panels.draw(Game.get_screen())
+        for col in self._map:
+            for panel in col:
+                for player in self.players:
+                    if panel.point == player.point:
+                        player.current_road.draw()
+                        break
+                else:
+                    panel.draw()
         self.players.draw(Game.get_screen())
         return pygame.rect.Rect(settings.ROOTY, settings.ROOTX-settings.STAGE_HEIGHT*20, 
                                 settings.STAGE_HEIGHT*20, settings.STAGE_WIDTH*20)
+    def _replace_panel(self, panel):
+        u"""Map上のパネルを置き換える"""
+        x = panel.point.x
+        y = panel.point.y
+        outdated_panel = self._map[x][y]
+        self._map[x][y] = panel
+        del outdated_panel
     def update(self):
         for player in self.players:
             player.update()
             p = player.poll()
-            if p != 0:
-                road = LShapeRoad(1, 1)
-                road.rotate(p)
+            u"""p=0のとき、何もしない、p=1のとき、右回転、p=2のとき設置、p=-1のとき左回転"""
+            if p == 2:
+                self._replace_panel(player.current_road)
+                player.attach_road()
+            elif p!=0:
+                player.current_road.rotate(p)

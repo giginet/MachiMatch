@@ -12,10 +12,10 @@ class Ground(Panel):
         隣の地形と道が繋がるかどうかを2進数表記で保持する
         上右下左の順に=1111
     """
-    NODE = 0000
+    NODE = "0000"
     IMAGEPATH = u"../resources/image/main/chips/grass.png"
     def __init__(self, x, y):
-        self.node = int(str(self.NODE), 2)
+        self.node = int(self.NODE, 2)
         super(Ground, self).__init__(x, y)
     @property
     def up(self):
@@ -31,7 +31,7 @@ class Ground(Panel):
         return self.node & 1    
 class Territory(Ground):
     u"""領土クラス"""
-    NODE = 1111
+    NODE = "1111"
     IMAGEPATH = u"../resources/image/main/chips/ground.png"
     def __init__(self, x, y, owner):
         super(Territory, self).__init__(x, y)

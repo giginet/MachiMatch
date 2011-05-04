@@ -1,4 +1,4 @@
-#Tue May 03 06:24:54 JST 2011
+#Thu May 05 01:06:30 JST 2011
 eclipse.preferences.version=1
 encoding//src/main.py=utf-8
 encoding//src/main/ground.py=utf-8
@@ -9,6 +9,7 @@ encoding//src/main/world.py=utf-8
 encoding//src/pywaz/device/joypad.py=utf-8
 encoding//src/pywaz/scene/abstractscene.py=utf-8
 encoding//src/pywaz/scene/manager.py=utf-8
+encoding//src/pywaz/sprite/animation.py=utf-8
 encoding//src/pywaz/sprite/image.py=utf-8
 encoding//src/scene/game.py=utf-8
 encoding//src/scene/logo.py=utf-8

@@ -16,7 +16,7 @@ from scene.logo import *
 from scene.game import *
 
 def main():
-    pygame.mixer.pre_init(44100, -16, 2, 1024*3)
+    
     pygame.init() # pygameの初期化
     
     game = Game()

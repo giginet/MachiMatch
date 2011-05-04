@@ -18,8 +18,8 @@ FRAMERATE = FPS = 24
 #Game Settings            #
 ###########################
 STAGE_WIDTH = 16
-STAGE_HEIGHT = 16
+STAGE_HEIGHT = 12
 
 PANELSIZE = 75
-ROOTX = 440
-ROOTY = -10
+ROOTX = 380
+ROOTY = -30
