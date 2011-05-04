@@ -34,8 +34,8 @@ class World(object):
                 row.append(panel)
             self._map.append(row)
     def get_panel_on(self, point):
-        x = point[0]
-        y = point[1]
+        x = point.x
+        y = point.y
         return self._map[x][y]
     def draw(self):
         u"""マップを描画する"""
@@ -43,10 +43,11 @@ class World(object):
             for panel in col:
                 for player in self.players:
                     if panel.point == player.point:
+                        player.current_road.alpha = 0.5
                         player.current_road.draw()
                         break
-                else:
-                    panel.draw()
+                    else:
+                        panel.draw()
         self.players.draw(Game.get_screen())
         return pygame.rect.Rect(settings.ROOTY, settings.ROOTX-settings.STAGE_HEIGHT*20, 
                                 settings.STAGE_HEIGHT*20, settings.STAGE_WIDTH*20)
@@ -57,7 +58,16 @@ class World(object):
         outdated_panel = self._map[x][y]
         self._map[x][y] = panel
         del outdated_panel
+    def is_valid(self, point):
+        x = point.x
+        y = point.y
+        return 0 <= x < settings.STAGE_WIDTH and 0 <= y < settings.STAGE_HEIGHT
     def update(self):
+        for col in self._map:
+            for panel in col:
+                if panel.is_road() and panel.update() == 1:
+                    ground = Ground(panel.point.x, panel.point.y)
+                    self._replace_panel(ground)
         for player in self.players:
             player.update()
             p = player.poll()

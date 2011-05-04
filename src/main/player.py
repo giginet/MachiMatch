@@ -26,16 +26,34 @@ class Player(Panel):
         self.pressed_attach = False
         self.pressed_rotate_r = False
         self.pressed_rotate_l = False
+        self.cursol_counter_h = 0
+        self.cursol_counter_v = 0
     def update(self):
         # ToDo　操作性が悪いのであとで改善する
         if Key.is_press(K_RIGHT):
-            self.point.x += 1
-        if Key.is_press(K_LEFT):
-            self.point.x -= 1
+            self.cursol_counter_h += 1
+            if self.cursol_counter_h > 1:
+                self.cursol_counter_h = 0
+                self.point.x += 1
+        elif Key.is_press(K_LEFT):
+            self.cursol_counter_h += 1
+            if self.cursol_counter_h > 1:
+                self.cursol_counter_h = 0
+                self.point.x -= 1
+        else:
+            self.cursol_counter_h = 0
         if Key.is_press(K_UP):
-            self.point.y -= 1
-        if Key.is_press(K_DOWN):
-            self.point.y += 1
+            self.cursol_counter_v += 1
+            if self.cursol_counter_v > 1:
+                self.cursol_counter_v = 0
+                self.point.y -= 1
+        elif Key.is_press(K_DOWN):
+            self.cursol_counter_v += 1
+            if self.cursol_counter_v > 1:
+                self.cursol_counter_v = 0
+                self.point.y += 1
+        else:
+            self.cursol_counter_v = 0
         if self.point.x < 0:
             self.point.x = 0
         elif self.point.x > settings.STAGE_WIDTH-1:
@@ -99,6 +117,7 @@ class Player(Panel):
             self.pressed_rotate_r = False
         return 0
     def attach_road(self):
+        self.current_road.on_attach()
         self.current_road = self.next_road
         self.current_road.point = self.point
         self.next_road = self.get_next_road()

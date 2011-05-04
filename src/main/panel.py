@@ -35,3 +35,5 @@ class Panel(Animation):
         super(Panel, self).draw(surface)
     def update(self):
         raise NotImplementedError
+    def is_road(self):
+        return False

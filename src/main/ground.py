@@ -3,6 +3,7 @@
 #    Created on 2011/05/03
 #    Created by giginet
 #
+from pywaz.core.game import Game
 from pywaz.utils.vector import Vector
 from main.panel import Panel
 
@@ -36,3 +37,8 @@ class Territory(Ground):
     def __init__(self, x, y, owner):
         super(Territory, self).__init__(x, y)
         self.owner = owner
+class Dummy(Ground):
+    u"""ダミーの地形クラス。_mapマトリックス外にアクセスしたときに返される"""
+    NODE = "1111"
+    def draw(self, surface=Game.get_screen()): pass
+    def update(self): pass

@@ -14,8 +14,8 @@ class Road(Ground):
         super(Road, self).__init__(x, y)
     def update(self):
         self.timer.tick()
-        if self.timer.is_over:
-            pass
+        if self.timer.is_over():
+            return 1
     def rotate(self, deg):
         u"""
             deg=1のとき時計回りに、deg=-1のとき反時計回りに回転させる
@@ -29,6 +29,10 @@ class Road(Ground):
         elif deg==-1:
             self.angle = (self.angle+3)%4
             self.node = (self.node & 7) << 1 | (self.node & 8) >> 3
+    def is_road(self):
+        return True
+    def on_attach(self):
+        self.timer.play()
 class LShapeRoad(Road): 
     NODE = "1001"
     IMAGEPATH = "../resources/image/main/roads/LShape.png"
