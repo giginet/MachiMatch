@@ -19,6 +19,7 @@ class Panel(Animation):
     IMAGEPATH = None
     MAXFRAME = 1
     def __init__(self, x, y):
+        u"""x,y マップ座標"""
         self.point = Vector(x, y)
         super(Panel, self).__init__(self.IMAGEPATH, AnimationInfo(0, 0, self.MAXFRAME, settings.PANELSIZE, settings.PANELSIZE, 1))
         self.animation_enable = False
@@ -45,13 +46,17 @@ class Panel(Animation):
         return Vector(self.x+36, self.y+32)
     @property
     def surface_above_edge(self):
+        u"""パネル表面上方中央の座標を取り出す"""
         return Vector(self.x+55, self.y+23)
     @property
     def surface_right_edge(self):
+        u"""パネル表面右中央の座標を取り出す"""
         return Vector(self.x+55, self.y+41)
     @property
     def surface_bottom_edge(self):
+        u"""パネル表面下方中央の座標を取り出す"""
         return Vector(self.x+18, self.y+43)
     @property
     def surface_left_edge(self):
+        u"""パネル表面左中央の座標を取り出す"""
         return Vector(self.x+24, self.y+24)

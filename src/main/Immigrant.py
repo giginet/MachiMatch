@@ -12,12 +12,14 @@ from main.panel import Panel
 class Immigrant(Panel):
     u"""移民クラス"""
     SPEED = 5
-    def __init__(self, x, world):
-        super(Immigrant, self).__init__(x, settings.STAGE_HEIGHT-1)
+    def __init__(self, x, y, world):
+        u"""移民を生成するマップ座標x, y, """
+        super(Immigrant, self).__init__(x, y)
         self.direction = 0    #右上から時計回りに0~3
         self.world = world    #ステージ情報を保持しておく
         self.current_panel = self.world.get_panel_on(self.point)   #今いるパネル座標
         self.goal = Vector(self.current_panel.panel_center)  #次に移民が向かう座標
+        self.x, self.y = self.current_panel.surface_bottom_edge.to_pos()
     u"""
         とりあえずマスの真ん中まで進む
         真ん中まで辿り着いたら、その床と周辺の床のnode情報を見て、繋がっているかどうか判定する
