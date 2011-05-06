@@ -3,6 +3,7 @@
 #    Created on 2011/04/20
 #    Created by giginet
 #
+import pygame
 import settings
 from pywaz.core.game import Game
 from pywaz.sprite.animation import Animation, AnimationInfo
@@ -36,4 +37,21 @@ class Panel(Animation):
     def update(self):
         raise NotImplementedError
     def is_road(self):
+        u"""このパネルが道かどうか"""
         return False
+    @property
+    def surface_center(self):
+        u"""パネル表面の中心座標を取り出す"""
+        return Vector(self.x+36, self.y+32)
+    @property
+    def surface_above_edge(self):
+        return Vector(self.x+55, self.y+23)
+    @property
+    def surface_right_edge(self):
+        return Vector(self.x+55, self.y+41)
+    @property
+    def surface_bottom_edge(self):
+        return Vector(self.x+18, self.y+43)
+    @property
+    def surface_left_edge(self):
+        return Vector(self.x+24, self.y+24)

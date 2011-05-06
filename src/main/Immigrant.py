@@ -3,15 +3,21 @@
 #    Created on 2011/05/05
 #    Created by giginet
 #
-
+import pygame
 import settings
+from pywaz.core.game import Game
+from pywaz.utils.vector import Vector
 from main.panel import Panel
 
 class Immigrant(Panel):
     u"""移民クラス"""
-    def __init__(self, x):
-        self.direction = 0 #右上から時計回りに0~3
+    SPEED = 5
+    def __init__(self, x, world):
         super(Immigrant, self).__init__(x, settings.STAGE_HEIGHT-1)
+        self.direction = 0    #右上から時計回りに0~3
+        self.world = world    #ステージ情報を保持しておく
+        self.current_panel = self.world.get_panel_on(self.point)   #今いるパネル座標
+        self.goal = Vector(self.current_panel.panel_center)  #次に移民が向かう座標
     u"""
         とりあえずマスの真ん中まで進む
         真ん中まで辿り着いたら、その床と周辺の床のnode情報を見て、繋がっているかどうか判定する
@@ -21,4 +27,14 @@ class Immigrant(Panel):
         それもできない場合、進行方向逆向きに進む
     """
     def update(self):
-        pass
+        current = Vector(self.x, self.y)
+        sub = self.goal - current
+        if sub.length < self.SPEED:
+            self.x, self.y = self.goal.to_pos()
+        else:
+            sub = sub.resize(self.SPEED)
+            current = current + sub
+            self.x, self.y = current.to_pos()
+    def draw(self, surface=Game.get_screen()):
+        pygame.draw.circle(surface, (255, 0, 0), (self.x, self.y), 3)
+        return super(Panel, self).draw(surface)

@@ -43,7 +43,6 @@ class World(object):
             for panel in col:
                 for player in self.players:
                     if panel.point == player.point:
-                        player.current_road.alpha = 0.5
                         player.current_road.draw()
                         break
                     else:
