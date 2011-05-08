@@ -29,7 +29,7 @@ class ImmigrantManager(object):
         del self.immigrants[self.immigrants.index(immigrant)]
     def update(self):
         map(lambda immigrant: immigrant.update(), self.immigrants)
-        r = random.randint(0, 10)
+        r = random.randint(0, 5)
         if r==0:
             x = random.randint(0, settings.STAGE_WIDTH-1)
             self.create_immigrant(x)

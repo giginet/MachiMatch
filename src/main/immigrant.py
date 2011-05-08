@@ -14,7 +14,7 @@ from main.ground import Dummy
 class Immigrant(Panel):
     IMAGEPATH = u"../resources/image/main/human01.png"
     u"""移民クラス"""
-    SPEED = 1
+    SPEED = 5
     def __init__(self, x, y, world):
         u"""移民を生成するマップ座標x, y, """
         super(Immigrant, self).__init__(x, y)
@@ -34,19 +34,23 @@ class Immigrant(Panel):
         current = Vector(self.x, self.y)
         sub = self.goal - current
         if sub.length < self.SPEED:
-            self.x, self.y = self.goal.to_pos()
-            self.current_ground = self.goal_ground
             if not self.current_ground.is_road():
                 self.world.i_manager.remove_immigrant(self)
+                return
             else:
+                self.x, self.y = self.goal.to_pos()
+                self.current_ground = self.goal_ground
                 self._set_goal()
         else:
             sub = sub.resize(self.SPEED)
             current = current + sub
             self.x, self.y = current.to_pos()
     def draw(self, surface=Game.get_screen()):
-        pygame.draw.circle(surface, (255, 0, 0), (self.x, self.y), 3)
-        return super(Panel, self).draw(surface)
+        x = self.x - 36
+        y = self.y - 30
+        #pygame.draw.circle(surface, (255, 0, 0), (self.x, self.y), 3)
+        # ToDo　画像を差し替えたら書き直すからとりあえずハードコーディング
+        return super(Panel, self).draw(surface, dest=pygame.rect.Rect(x, y, settings.PANELSIZE, settings.PANELSIZE))
     def _set_goal(self):
         u"""隣接した4つのパネルを見て動きを決める"""
         front = self.world.get_panel_from(self.current_ground, self.direction) #自分の前方にあるパネルを取ってくる
@@ -64,7 +68,15 @@ class Immigrant(Panel):
             if right.is_connect_with(self.current_ground): next_goals.append((right, right_direction))
             if next_goals:
                 u"""左右いずれかに進めるとき"""
-                self.goal_ground, self.direction = random.choice(next_goals)
+                u"""奥側（direction=0）に進めたら優先的に採用"""
+                for g, d in next_goals:
+                    if d == 0:
+                        self.goal_ground = g
+                        self.direction = d
+                        break
+                else:
+                    u"""それ以外の時はランダム"""
+                    self.goal_ground, self.direction = random.choice(next_goals)
             else:
                 u"""左右いずれにも進めないとき"""
                 d = (self.direction+2)%4
