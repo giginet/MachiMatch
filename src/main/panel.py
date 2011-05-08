@@ -37,26 +37,3 @@ class Panel(Animation):
         super(Panel, self).draw(surface)
     def update(self):
         raise NotImplementedError
-    def is_road(self):
-        u"""このパネルが道かどうか"""
-        return False
-    @property
-    def surface_center(self):
-        u"""パネル表面の中心座標を取り出す"""
-        return Vector(self.x+36, self.y+32)
-    @property
-    def surface_above_edge(self):
-        u"""パネル表面上方中央の座標を取り出す"""
-        return Vector(self.x+55, self.y+23)
-    @property
-    def surface_right_edge(self):
-        u"""パネル表面右中央の座標を取り出す"""
-        return Vector(self.x+55, self.y+41)
-    @property
-    def surface_bottom_edge(self):
-        u"""パネル表面下方中央の座標を取り出す"""
-        return Vector(self.x+18, self.y+43)
-    @property
-    def surface_left_edge(self):
-        u"""パネル表面左中央の座標を取り出す"""
-        return Vector(self.x+24, self.y+24)

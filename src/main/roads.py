@@ -10,7 +10,7 @@ from pywaz.utils.timer import Timer
 class Road(Ground):
     def __init__(self, x, y): 
         self.angle = 0
-        self.timer = Timer(settings.FPS*20)
+        self.timer = Timer(settings.FPS*1000)
         super(Road, self).__init__(x, y)
     def update(self):
         self.timer.tick()

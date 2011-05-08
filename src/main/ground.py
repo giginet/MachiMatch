@@ -29,7 +29,44 @@ class Ground(Panel):
         return self.node & 2
     @property
     def left(self):
-        return self.node & 1    
+        return self.node & 1
+    def is_road(self):
+        u"""このパネルが道かどうか"""
+        return False
+    @property
+    def surface_center(self):
+        u"""パネル表面の中心座標を取り出す"""
+        return Vector(self.x+36, self.y+32)
+    @property
+    def surface_above_edge(self):
+        u"""パネル表面上方中央の座標を取り出す"""
+        return Vector(self.x+55, self.y+23)
+    @property
+    def surface_right_edge(self):
+        u"""パネル表面右中央の座標を取り出す"""
+        return Vector(self.x+55, self.y+41)
+    @property
+    def surface_bottom_edge(self):
+        u"""パネル表面下方中央の座標を取り出す"""
+        return Vector(self.x+18, self.y+43)
+    @property
+    def surface_left_edge(self):
+        u"""パネル表面左中央の座標を取り出す"""
+        return Vector(self.x+24, self.y+24)
+    def is_connect_with(self, ground):
+        u"""指定したgroundと接続されているかどうか"""
+        subx = ground.point.x - self.point.x
+        suby = ground.point.y - self.point.y
+        if suby == -1:
+            return self.up and ground.down
+        elif subx == 1:
+            return self.right and ground.left
+        elif suby == 1:
+            return self.down and ground.up
+        elif subx == -1:
+            return self.left and ground.right
+        else:
+            return False
 class Territory(Ground):
     u"""領土クラス"""
     NODE = "1111"

@@ -7,11 +7,11 @@
 import pygame
 import settings
 from pywaz.core.game import Game
-from ground import Ground, Territory
+from ground import Ground, Territory, Dummy
+from immigrantManager import ImmigrantManager
 from player import Player
 from pywaz.sprite import OrderedUpdates
 
-from main.roads import LShapeRoad
 
 class World(object):
     u"""マップを管理するクラス"""
@@ -19,6 +19,7 @@ class World(object):
         self._generate_stage()
         self.players = OrderedUpdates()
         self.player_count = 1
+        self.i_manager = ImmigrantManager(self)
         for n in xrange(0,self.player_count):
             self.players.add(Player(0))
     def _generate_stage(self):
@@ -34,9 +35,13 @@ class World(object):
                 row.append(panel)
             self._map.append(row)
     def get_panel_on(self, point):
+        u"""渡されたpointにあるパネルを取ってくる。領域外の場合はDummyパネルを返す"""
         x = point.x
         y = point.y
-        return self._map[x][y]
+        if self.is_valid(point):
+            return self._map[x][y]
+        else:
+            return Dummy(point.x, point.y)
     def draw(self):
         u"""マップを描画する"""
         for col in self._map:
@@ -48,6 +53,7 @@ class World(object):
                     else:
                         panel.draw()
         self.players.draw(Game.get_screen())
+        self.i_manager.draw()
         return pygame.rect.Rect(settings.ROOTY, settings.ROOTX-settings.STAGE_HEIGHT*20, 
                                 settings.STAGE_HEIGHT*20, settings.STAGE_WIDTH*20)
     def _replace_panel(self, panel):
@@ -58,6 +64,7 @@ class World(object):
         self._map[x][y] = panel
         del outdated_panel
     def is_valid(self, point):
+        u"""渡された座標が領域内かどうかを判定する"""
         x = point.x
         y = point.y
         return 0 <= x < settings.STAGE_WIDTH and 0 <= y < settings.STAGE_HEIGHT
@@ -76,3 +83,19 @@ class World(object):
                 player.attach_road()
             elif p!=0:
                 player.current_road.rotate(p)
+        self.i_manager.update()
+    def get_panel_from(self, panel, direction):
+        u"""
+            panelからdirectionの向きにあるパネルを取り出す
+            direction　上から時計回りに0~3
+        """
+        point = panel.point.clone()
+        if direction==0:
+            point.y -=1
+        elif direction==1:
+            point.x +=1
+        elif direction==2:
+            point.y +=1
+        elif direction==3:
+            point.x -=1
+        return self.get_panel_on(point)
