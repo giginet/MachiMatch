@@ -16,12 +16,12 @@ from pywaz.sprite import OrderedUpdates
 class World(object):
     u"""マップを管理するクラス"""
     def __init__(self, *args, **kwargs):
-        self._generate_stage()
-        self.players = OrderedUpdates()
+        self.players = []
         self.player_count = 1
         self.i_manager = ImmigrantManager(self)
         for n in xrange(0,self.player_count):
-            self.players.add(Player(0))
+            self.players.append(Player(n, self))
+        self._generate_stage()
     def _generate_stage(self):
         u"""ステージを生成する"""
         self._map = []
@@ -29,7 +29,7 @@ class World(object):
             row = []
             for y in xrange(settings.STAGE_HEIGHT):
                 if y < 4:
-                    panel = Territory(x, y, 1)
+                    panel = Territory(x, y, self.players[0]) # 本来はゲームに参加しているプレイヤー数によっていろいろ処理を分岐させるけどあとで
                 else:
                     panel = Ground(x, y)
                 row.append(panel)
@@ -52,7 +52,7 @@ class World(object):
                         break
                     else:
                         panel.draw()
-        self.players.draw(Game.get_screen())
+        map(lambda p: p.draw(), self.players)
         self.i_manager.draw()
         return pygame.rect.Rect(settings.ROOTY, settings.ROOTX-settings.STAGE_HEIGHT*20, 
                                 settings.STAGE_HEIGHT*20, settings.STAGE_WIDTH*20)

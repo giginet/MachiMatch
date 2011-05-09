@@ -9,12 +9,11 @@ import settings
 from pywaz.core.game import Game
 from pywaz.utils.vector import Vector
 from main.panel import Panel
-from main.ground import Dummy
 
 class Immigrant(Panel):
     IMAGEPATH = u"../resources/image/main/human01.png"
     u"""移民クラス"""
-    SPEED = 5
+    SPEED = 3
     def __init__(self, x, y, world):
         u"""移民を生成するマップ座標x, y, """
         super(Immigrant, self).__init__(x, y)
@@ -34,14 +33,22 @@ class Immigrant(Panel):
         current = Vector(self.x, self.y)
         sub = self.goal - current
         if sub.length < self.SPEED:
+            u"""ゴールに到着したとき"""
             if not self.current_ground.is_road():
+                u"""道以外のマスの時"""
+                if self.current_ground.is_territory():
+                    u"""領土の時"""
+                    population = random.randint(8000, 12000)
+                    self.current_ground.owner.city.increase_population(population) # 街の人口を増やす
                 self.world.i_manager.remove_immigrant(self)
                 return
             else:
+                u"""道の時"""
                 self.x, self.y = self.goal.to_pos()
                 self.current_ground = self.goal_ground
                 self._set_goal()
         else:
+            u"""ゴールに到着していないとき"""
             sub = sub.resize(self.SPEED)
             current = current + sub
             self.x, self.y = current.to_pos()
@@ -84,8 +91,17 @@ class Immigrant(Panel):
                 if back.is_connect_with(self.current_ground):
                     self.goal_ground = back
                     self.direction = d
-            
     @property
     def goal(self):
         u"""次に移民が向かう座標を返す"""
+        if not self.current_ground.is_road():
+            u"""道以外の場合、端の座標を返す"""
+            if self.direction == 0:
+                return self.current_ground.surface_bottom_edge
+            elif self.direction == 1:
+                return self.current_ground.surface_left_edge
+            elif self.direction == 2:    
+                return self.current_ground.surface_above_edge    
+            elif self.direction == 3:
+                return self.current_ground.surface_right_edge
         return self.current_ground.surface_center.clone()

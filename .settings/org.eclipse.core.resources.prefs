@@ -1,6 +1,7 @@
-#Sun May 08 17:12:08 JST 2011
+#Mon May 09 17:26:48 JST 2011
 eclipse.preferences.version=1
 encoding//src/main.py=utf-8
+encoding//src/main/city.py=utf-8
 encoding//src/main/ground.py=utf-8
 encoding//src/main/immigrant.py=utf-8
 encoding//src/main/immigrantManager.py=utf-8

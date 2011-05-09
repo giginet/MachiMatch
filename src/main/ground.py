@@ -31,7 +31,10 @@ class Ground(Panel):
     def left(self):
         return self.node & 1
     def is_road(self):
-        u"""このパネルが道かどうか"""
+        u"""この床が道かどうか"""
+        return False
+    def is_territory(self):
+        u"""この床が領土かどうか"""
         return False
     @property
     def surface_center(self):
@@ -72,8 +75,13 @@ class Territory(Ground):
     NODE = "1111"
     IMAGEPATH = u"../resources/image/main/chips/ground.png"
     def __init__(self, x, y, owner):
+        u"""
+            owner : この領土を所持するPlayer
+        """
         super(Territory, self).__init__(x, y)
         self.owner = owner
+    def is_territory(self):
+        return True
 class Dummy(Ground):
     u"""ダミーの地形クラス。_mapマトリックス外にアクセスしたときに返される"""
     NODE = "1111"

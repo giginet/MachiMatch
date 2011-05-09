@@ -11,11 +11,16 @@ from pywaz.device.joypad import JoyPad
 from pywaz.device.key import Key
 from main.panel import Panel
 from main.roads import *
+from main.city import City
 
 class Player(Panel):
     u"""プレイヤークラス"""
     IMAGEPATH = u"../resources/image/main/player0.png"
-    def __init__(self, number):
+    def __init__(self, number, world):
+        u"""
+            number : Player番号。0~3
+            world  : Worldクラスインスタンス
+        """
         self.number = number
         super(Player, self).__init__(0, 0)
         self.index = self.number
@@ -28,6 +33,7 @@ class Player(Panel):
         self.pressed_rotate_l = False
         self.cursol_counter_h = 0
         self.cursol_counter_v = 0
+        self.city = City(number, world)
     def update(self):
         # ToDo　操作性が悪いのであとで改善する
         if Key.is_press(K_RIGHT):
