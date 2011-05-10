@@ -3,6 +3,7 @@
 #    Created on 2011/05/09
 #    Created by giginet
 #
+import settings
 class City(object):
     u"""街クラス。人口や発展状況などを管理する"""
     def __init__(self, owner, world):
@@ -22,4 +23,7 @@ class City(object):
         """
         self.population += p*2**(self.level-1)
         print u"Player:%d %d人" % (self.owner+1, self.population)
+        if self.level < 5 and settings.LEVELUP_BORDERLINES[self.level] < self.population:
+            self.level +=1
+            print "LevelUp! %d" % self.level
         #ToDo LvUP判定
