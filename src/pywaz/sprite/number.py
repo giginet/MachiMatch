@@ -15,11 +15,11 @@ from pywaz.core.game import Game
 class Number(Sprite):
     u"""
         表示する数値を変更する : NumberInstance.n = 100
-        文字のそろえを変更する : NumberInstance.align = Number.TEXTALIGNLEFT or Number.TEXTALIGNRIGHT
+        文字のそろえを変更する : NumberInstance.align = Number.TEXTALIGNLEFT or Number.TEXTALIGNRIGHT or Number.TEXTALIGNCENTER
     """
     TEXTALIGNLEFT = 0
     TEXTALIGNRIGHT = 1
-    
+    TEXTALIGNCENTER = 2
     def __init__(self, filepath, n=0, x=0, y=0, w=20, h=40, margin=0):
         u"""
             filepath : 文字スプライトの画像パス(0-9まで等幅で並んでいる必要がある)
@@ -62,6 +62,9 @@ class Number(Sprite):
         if self.align == self.TEXTALIGNRIGHT:
             u"""右揃えに変更する"""
             dest = dest.move(-self.image.get_width(), 0)
+        elif self.align == self.TEXTALIGNCENTER:
+            u"""中央揃えに変更する"""
+            dest = dest.move(-self.image.get_width()/2, 0)
         return surface.blit(self.image, dest=dest)
     
     def get_surface(self):

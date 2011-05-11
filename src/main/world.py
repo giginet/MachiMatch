@@ -94,7 +94,7 @@ class World(object):
                     panel.draw()
         map(lambda p: p.draw(), self.players)
         self.i_manager.draw()
-        return pygame.rect.Rect(settings.ROOTY, settings.ROOTX-settings.STAGE_HEIGHT*20, 
+        return pygame.rect.Rect(settings.ROOT_POSITION[1], settings.ROOT_POSITION[0]-settings.STAGE_HEIGHT*20, 
                                 settings.STAGE_HEIGHT*20, settings.STAGE_WIDTH*20)
     def _replace_panel(self, panel):
         u"""Map上のパネルを置き換える"""

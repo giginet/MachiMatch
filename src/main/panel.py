@@ -22,19 +22,19 @@ class Panel(Animation):
         u"""x,y マップ座標"""
         self.point = Vector(x, y)
         super(Panel, self).__init__(self.IMAGEPATH, AnimationInfo(0, 0, self.MAXFRAME, settings.PANELSIZE, settings.PANELSIZE, 1))
-        self.x = settings.ROOTX - self.point.y*37 + self.point.x*37
-        self.y = settings.ROOTY + self.point.x*19 + self.point.y*19
+        self.x = settings.ROOT_POSITION[0] - self.point.y*37 + self.point.x*37
+        self.y = settings.ROOT_POSITION[1] + self.point.x*19 + self.point.y*19
         self.animation_enable = False
     def draw(self, surface=Game.get_screen(), x=None, y=None):
         u"""
             x, y　: 渡されたとき、その座標に描画。渡されていないときはself.pointを元に算出
         """
         if not x:
-            self.x = settings.ROOTX - self.point.y*37 + self.point.x*37
+            self.x = settings.ROOT_POSITION[0] - self.point.y*37 + self.point.x*37
         else:
             self.x = x
         if not y:
-            self.y = settings.ROOTY + self.point.x*19 + self.point.y*19
+            self.y = settings.ROOT_POSITION[1] + self.point.x*19 + self.point.y*19
         else:
             self.y = y
         super(Panel, self).draw(surface)
