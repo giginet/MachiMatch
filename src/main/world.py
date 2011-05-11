@@ -6,11 +6,9 @@
 
 import pygame
 import settings
-from pywaz.core.game import Game
 from ground import Ground, Territory, Dummy
 from immigrantManager import ImmigrantManager
 from player import Player
-from pywaz.sprite import OrderedUpdates
 
 
 class World(object):
@@ -32,11 +30,49 @@ class World(object):
             row = []
             for y in xrange(settings.STAGE_HEIGHT):
                 if y < 4:
-                    panel = Territory(x, y, self.players[0]) # 本来はゲームに参加しているプレイヤー数によっていろいろ処理を分岐させるけどあとで
+                    panel = self._generate_territory(x, y) # ゲーム参加人数によって領土を置くかどうか調査
                 else:
                     panel = Ground(x, y)
                 row.append(panel)
             self._map.append(row)
+    def _generate_territory(self, x, y):
+        u"""
+            x, yの位置に設置されるTerritoryを返す
+            プレイヤー人数によって配置が異なるのでその処理をココで行う
+        """
+        if self.player_count == 1:
+            if 6 <= x <= 9:
+                return Territory(x, y, self.players[0])
+            else:
+                return Ground(x, y)                
+        elif self.player_count == 2:
+            u"""
+                2-5 Player 1
+                10-13 Player 2
+            """
+            if 2 <= x <= 5:
+                return Territory(x, y, self.players[0])
+            elif 10 <= x <= 13:
+                return Territory(x, y, self.players[1])
+            else:
+                return Ground(x, y)
+        elif self.player_count == 3:
+            u"""
+                1~4 Player 1
+                6-9 Player 2
+                11-14 Player 3
+            """
+            if 1 <= x <= 4:
+                return Territory(x, y, self.players[0])
+            elif 6 <= x <= 9:
+                return Territory(x, y, self.players[1])
+            elif 11 <= x <= 14:
+                return Territory(x, y, self.players[2])
+            else:
+                return Ground(x, y)
+        elif self.player_count == 4:
+            return Territory(x, y, self.players[int(x/4)])
+        
     def get_panel_on(self, point):
         u"""渡されたpointにあるパネルを取ってくる。領域外の場合はDummyパネルを返す"""
         x = point.x
@@ -83,8 +119,9 @@ class World(object):
             p = player.poll()
             u"""p=0のとき、何もしない、p=1のとき、右回転、p=2のとき設置、p=-1のとき左回転"""
             if p == 2:
-                self._replace_panel(player.current_road)
-                player.attach_road()
+                if self.get_panel_on(player.point).can_attach_road():
+                    self._replace_panel(player.current_road)
+                    player.attach_road()
             elif p!=0:
                 player.current_road.rotate(p)
         self.i_manager.update()

@@ -70,6 +70,8 @@ class Ground(Panel):
             return self.left and ground.right
         else:
             return False
+    def can_attach_road(self):
+        return True
 class Territory(Ground):
     u"""領土クラス"""
     NODE = "1111"
@@ -82,8 +84,12 @@ class Territory(Ground):
         self.owner = owner
     def is_territory(self):
         return True
+    def can_attach_road(self):
+        return False
 class Dummy(Ground):
     u"""ダミーの地形クラス。_mapマトリックス外にアクセスしたときに返される"""
     NODE = "1111"
     def draw(self, surface=Game.get_screen()): pass
     def update(self): pass
+    def can_attach_road(self):
+        return False
