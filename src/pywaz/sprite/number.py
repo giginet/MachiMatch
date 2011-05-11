@@ -4,15 +4,11 @@
 #    Created by giginet
 #
 
-from pywaz.sprite.image import Image
 
-import numbers
 import pygame
-import settings
 
 from pygame.rect import Rect
 from pygame.sprite import Sprite
-from pygame.sprite import OrderedUpdates
 from pywaz.sprite.image import Image
 from pywaz.core.game import Game
 

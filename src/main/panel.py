@@ -25,9 +25,18 @@ class Panel(Animation):
         self.x = settings.ROOTX - self.point.y*37 + self.point.x*37
         self.y = settings.ROOTY + self.point.x*19 + self.point.y*19
         self.animation_enable = False
-    def draw(self, surface=Game.get_screen()):
-        self.x = settings.ROOTX - self.point.y*37 + self.point.x*37
-        self.y = settings.ROOTY + self.point.x*19 + self.point.y*19
+    def draw(self, surface=Game.get_screen(), x=None, y=None):
+        u"""
+            x, y　: 渡されたとき、その座標に描画。渡されていないときはself.pointを元に算出
+        """
+        if not x:
+            self.x = settings.ROOTX - self.point.y*37 + self.point.x*37
+        else:
+            self.x = x
+        if not y:
+            self.y = settings.ROOTY + self.point.x*19 + self.point.y*19
+        else:
+            self.y = y
         super(Panel, self).draw(surface)
     def update(self):
         raise NotImplementedError

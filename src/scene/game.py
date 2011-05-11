@@ -23,11 +23,10 @@ class GameScene(Scene):
             self.navigations.append(Navigation(player))
     def update(self):
         self.world.update()
-        super(GameScene, self).update()
         map(lambda n: n.update(), self.navigations)
+        super(GameScene, self).update()
     def draw(self):
         super(GameScene, self).draw()
         rect = self.world.draw()
         map(lambda n: n.draw(), self.navigations)
         return rect
-        
