@@ -12,16 +12,22 @@ from pywaz.scene.manager import SceneManager
 from pywaz.scene.abstractscene import Scene
 
 from main.world import World
+from main.navigation import Navigation
 
 class GameScene(Scene):
     BACKGROUND = (153,255,255)
     def ready(self, *args, **kwargs):
         self.world = World()
+        self.navigations = []
+        for player in self.world.players:
+            self.navigations.append(Navigation(player))
     def update(self):
         self.world.update()
         super(GameScene, self).update()
+        map(lambda n: n.update(), self.navigations)
     def draw(self):
         super(GameScene, self).draw()
         rect = self.world.draw()
+        map(lambda n: n.draw(), self.navigations)
         return rect
         

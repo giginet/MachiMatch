@@ -35,6 +35,7 @@ class Player(Panel):
         self.cursol_counter_v = 0
         self.city = City(number, world)
     def update(self):
+        if not self.number == 0: return
         # ToDo　操作性が悪いのであとで改善する
         if Key.is_press(K_RIGHT):
             self.cursol_counter_h += 1
@@ -77,6 +78,7 @@ class Player(Panel):
 #            self.point.y += 1 if yaxis > 0 else -1
         self.current_road.point = self.point.clone()
     def poll(self):
+        if not self.number == 0: return 0
         return self._poll_key()
     def get_next_road(self):
         if len(self.roads_queue) == 0:

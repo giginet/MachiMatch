@@ -17,10 +17,13 @@ class World(object):
     u"""マップを管理するクラス"""
     def __init__(self, *args, **kwargs):
         self.players = []
-        self.player_count = 1
+        self.player_count = 4
+        self.player_positions = []
         self.i_manager = ImmigrantManager(self)
         for n in xrange(0,self.player_count):
-            self.players.append(Player(n, self))
+            p = Player(n, self)
+            self.players.append(p)
+            self.player_positions.append(p.point)
         self._generate_stage()
     def _generate_stage(self):
         u"""ステージを生成する"""
@@ -46,12 +49,13 @@ class World(object):
         u"""マップを描画する"""
         for col in self._map:
             for panel in col:
-                for player in self.players:
-                    if panel.point == player.point:
-                        player.current_road.draw()
-                        break
-                    else:
-                        panel.draw()
+                if panel.point in self.player_positions:
+                    for player in self.players:
+                        if player.point == panel.point:
+                            player.current_road.draw()
+                            break
+                else:
+                    panel.draw()
         map(lambda p: p.draw(), self.players)
         self.i_manager.draw()
         return pygame.rect.Rect(settings.ROOTY, settings.ROOTX-settings.STAGE_HEIGHT*20, 
