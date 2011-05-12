@@ -14,8 +14,11 @@ class GameTimer(Number):
         super(GameTimer, self).__init__(u"../resources/image/main/navigation/number.png", w=18, h=45)
         self.x, self.y = settings.TIMER_POSITON
         self.align = Number.TEXTALIGNCENTER
+        self.n = int((self.timer.max-self.timer.now)/settings.FPS)
     def update(self):
         self.timer.tick()
         self.n = int((self.timer.max-self.timer.now)/settings.FPS)
     def play(self):
         self.timer.play()
+    def is_over(self):
+        return self.timer.is_over()

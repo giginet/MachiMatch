@@ -140,3 +140,11 @@ class World(object):
         elif direction==3:
             point.x -=1
         return self.get_panel_on(point)
+    def get_winner(self):
+        max = 0
+        winner = self.players[0]
+        for player in self.players:
+            if max < player.city.population:
+                winner = player
+                max = player.city.population
+        return winner
