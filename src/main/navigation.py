@@ -25,19 +25,15 @@ class Navigation(Image):
         self.owner = owner
         number = self.owner.number
         self.x, self.y = self.NAVIGATION_POSITIONS[self.owner.number]
-        self.label = Image(u"../resources/image/main/navigation/population.png")
-        self.label.x = self.x + self.LABEL_POSITIONS[number][0]
-        self.label.y = self.y + self.LABEL_POSITIONS[number][1]
         self.population = PopulationCounter(owner)
-        self.population.x = self.label.x + self.POPULATION_POSITIONS[number][0]
-        self.population.y = self.label.y + self.POPULATION_POSITIONS[number][1]
+        self.population.x = self.x + self.LABEL_POSITIONS[number][0] + self.POPULATION_POSITIONS[number][0]
+        self.population.y = self.y + self.LABEL_POSITIONS[number][1] + self.POPULATION_POSITIONS[number][1]
         self.pre_population = self.owner.city.population
         self.pre_next_road = self.owner.next_road.__class__
         if number % 2 ==1:
             self.population.align = Number.TEXTALIGNRIGHT
     def draw(self, surface=Game.get_screen()):
         super(Navigation, self).draw()
-        self.label.draw()
         self.population.draw()
         self.owner.next_road.draw(x=self.x+self.NEXT_POSITIONS[self.owner.number][0], 
                                   y=self.y+self.NEXT_POSITIONS[self.owner.number][1]
@@ -56,7 +52,7 @@ class PopulationCounter(Number):
     def update(self):
         population = self.owner.city.population
         if self.n != population:
-            sub = population - self.n # 差
+            sub = abs(population - self.n) # 差
             place = len(str(sub)) # 桁数
             if self.n < population:
                 self.n += 10**(place-1) 

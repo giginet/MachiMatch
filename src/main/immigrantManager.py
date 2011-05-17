@@ -24,6 +24,7 @@ class ImmigrantManager(object):
         if not ground.down: return # 道が下に繋がっていなかったら生成しない
         immigrant = Immigrant(x, settings.STAGE_HEIGHT-1, self.world)
         self.immigrants.append(immigrant)
+        return immigrant
     def remove_immigrant(self, immigrant):
         u"""immigrantをマップ上から削除する"""
         del self.immigrants[self.immigrants.index(immigrant)]

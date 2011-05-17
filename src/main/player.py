@@ -35,6 +35,7 @@ class Player(Panel):
         self.cursol_counter_v = 0
         self.city = City(number, world)
     def update(self):
+        self.city.update()
         if not self.number == 0: return
         # ToDo　操作性が悪いのであとで改善する
         if Key.is_press(K_RIGHT):

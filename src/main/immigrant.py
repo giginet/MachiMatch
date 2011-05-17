@@ -11,7 +11,11 @@ from pywaz.utils.vector import Vector
 from main.panel import Panel
 
 class Immigrant(Panel):
-    IMAGEPATH = u"../resources/image/main/human01.png"
+    IMAGEPATH = u"../resources/image/main/human00.png"
+    MAXFRAME = 4
+    IMAGEWIDTH = 15
+    IMAGEHEIGHT = 30
+    APF = 2
     u"""移民クラス"""
     SPEED = 3
     def __init__(self, x, y, world):
@@ -22,6 +26,8 @@ class Immigrant(Panel):
         self.current_ground = self.world.get_panel_on(self.point)   #今いるパネル
         self.goal_ground = self.current_ground #ゴールのあるパネル
         self.x, self.y = self.current_ground.surface_bottom_edge.to_pos()
+        self.animation_enable = True
+        self.population = None
     u"""
         とりあえずマスの真ん中まで進む
         真ん中まで辿り着いたら、その床と周辺の床のnode情報を見て、繋がっているかどうか判定する
@@ -34,27 +40,27 @@ class Immigrant(Panel):
         sub = self.goal - current
         if sub.length < self.SPEED:
             u"""ゴールに到着したとき"""
+            self.current_ground = self.goal_ground
             if not self.current_ground.is_road():
                 u"""道以外のマスの時"""
                 if self.current_ground.is_territory():
                     u"""領土の時"""
-                    population = random.randint(8000, 12000)
-                    self.current_ground.owner.city.increase_population(population) # 街の人口を増やす
+                    self.current_ground.owner.city.increase_population(self.population) # 街の人口を増やす
                 self.world.i_manager.remove_immigrant(self)
                 return
             else:
                 u"""道の時"""
                 self.x, self.y = self.goal.to_pos()
-                self.current_ground = self.goal_ground
                 self._set_goal()
         else:
             u"""ゴールに到着していないとき"""
             sub = sub.resize(self.SPEED)
             current = current + sub
             self.x, self.y = current.to_pos()
+        super(Panel, self).update()
     def draw(self, surface=Game.get_screen()):
-        x = self.x - 36
-        y = self.y - 30
+        x = self.x - 7
+        y = self.y - 25
         #pygame.draw.circle(surface, (255, 0, 0), (self.x, self.y), 3)
         # ToDo　画像を差し替えたら書き直すからとりあえずハードコーディング
         return super(Panel, self).draw(surface, dest=pygame.rect.Rect(x, y, settings.PANELSIZE, settings.PANELSIZE))
@@ -91,17 +97,18 @@ class Immigrant(Panel):
                 if back.is_connect_with(self.current_ground):
                     self.goal_ground = back
                     self.direction = d
+            self.ainfo.index = self.direction
     @property
     def goal(self):
         u"""次に移民が向かう座標を返す"""
-        if not self.current_ground.is_road():
+        if not self.goal_ground.is_road():
             u"""道以外の場合、端の座標を返す"""
             if self.direction == 0:
-                return self.current_ground.surface_bottom_edge
+                return self.goal_ground.surface_bottom_edge
             elif self.direction == 1:
-                return self.current_ground.surface_left_edge
+                return self.goal_ground.surface_left_edge
             elif self.direction == 2:    
-                return self.current_ground.surface_above_edge    
+                return self.goal_ground.surface_above_edge    
             elif self.direction == 3:
-                return self.current_ground.surface_right_edge
-        return self.current_ground.surface_center.clone()
+                return self.goal_ground.surface_right_edge
+        return self.goal_ground.surface_center

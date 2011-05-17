@@ -82,6 +82,7 @@ class Territory(Ground):
         """
         super(Territory, self).__init__(x, y)
         self.owner = owner
+        owner.city.territories.append(self)
     def is_territory(self):
         return True
     def can_attach_road(self):

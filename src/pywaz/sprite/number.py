@@ -42,6 +42,8 @@ class Number(Sprite):
         self._parse()
         
     def _parse(self):
+        if self.n < 0:
+            self.n = 0
         place = len(str(self.n)) # 桁
         self.image = pygame.surface.Surface((self.width*place+self.margin*place, self.height))
         self.image.set_colorkey((0,0,0))

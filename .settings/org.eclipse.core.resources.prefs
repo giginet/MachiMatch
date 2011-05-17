@@ -1,4 +1,4 @@
-#Thu May 12 08:23:38 JST 2011
+#Sat May 14 10:21:17 JST 2011
 eclipse.preferences.version=1
 encoding//src/main.py=utf-8
 encoding//src/main/building.py=utf-8
@@ -19,6 +19,7 @@ encoding//src/pywaz/sprite/animation.py=utf-8
 encoding//src/pywaz/sprite/image.py=utf-8
 encoding//src/pywaz/sprite/number.py=utf-8
 encoding//src/pywaz/utils/timer.py=utf-8
+encoding//src/pywaz/utils/vector.py=utf-8
 encoding//src/scene/game.py=utf-8
 encoding//src/scene/logo.py=utf-8
 encoding//src/settings/__init__.py=utf-8

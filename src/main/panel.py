@@ -18,10 +18,13 @@ class Panel(Animation):
     """
     IMAGEPATH = None
     MAXFRAME = 1
+    IMAGEWIDTH = settings.PANELSIZE
+    IMAGEHEIGHT = settings.PANELSIZE
+    APF = 1
     def __init__(self, x, y):
         u"""x,y マップ座標"""
         self.point = Vector(x, y)
-        super(Panel, self).__init__(self.IMAGEPATH, AnimationInfo(0, 0, self.MAXFRAME, settings.PANELSIZE, settings.PANELSIZE, 1))
+        super(Panel, self).__init__(self.IMAGEPATH, AnimationInfo(0, 0, self.MAXFRAME, self.IMAGEWIDTH, self.IMAGEHEIGHT, self.APF))
         self.x = settings.ROOT_POSITION[0] - self.point.y*37 + self.point.x*37
         self.y = settings.ROOT_POSITION[1] + self.point.x*19 + self.point.y*19
         self.animation_enable = False
