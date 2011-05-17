@@ -31,7 +31,7 @@ class LogoScene(Scene):
         self.timer.tick()
         self.timer.play()
         if self.timer.is_over() or Mouse.is_press('LEFT'):
-            Game.get_scene_manager().change_scene('game')
+            Game.get_scene_manager().change_scene('mainmenu')
         elif self.timer.now < 60:
             self.logo.alpha = 255*self.timer.now/60
         elif 120 < self.timer.now:

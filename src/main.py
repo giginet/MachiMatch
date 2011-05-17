@@ -14,13 +14,20 @@ from pywaz.device.key import Key
 
 from scene.logo import *
 from scene.game import *
+from scene.mainmenu import *
+from scene.keysetting import *
 
 def main():
     
     pygame.init() # pygameの初期化
     
     game = Game()
-    game.get_scene_manager().set_scenes({'logo':LogoScene(), 'game':GameScene(), })
+    game.get_scene_manager().set_scenes({
+        'logo':LogoScene(),
+        'game':GameScene(),
+        'mainmenu':MainMenuScene(),
+        'keysetting':KeySettingScene(),
+    })
     if settings.DEBUG:        
         game.get_scene_manager().change_scene('game')
     else:
