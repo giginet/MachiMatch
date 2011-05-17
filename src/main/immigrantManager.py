@@ -17,12 +17,9 @@ class ImmigrantManager(object):
         """
         self.world = world
         self.immigrants = []
-    def create_immigrant(self, x):
+    def create_immigrant(self, x, y):
         u"""x列の一番手前の行に新しく移民を生成する"""
-        at = Vector(x, settings.STAGE_HEIGHT-1)
-        ground = self.world.get_panel_on(at)
-        if not ground.down: return # 道が下に繋がっていなかったら生成しない
-        immigrant = Immigrant(x, settings.STAGE_HEIGHT-1, self.world)
+        immigrant = Immigrant(x, y, self.world)
         self.immigrants.append(immigrant)
         return immigrant
     def remove_immigrant(self, immigrant):
@@ -30,9 +27,12 @@ class ImmigrantManager(object):
         del self.immigrants[self.immigrants.index(immigrant)]
     def update(self):
         map(lambda immigrant: immigrant.update(), self.immigrants)
-        r = random.randint(0, 5)
+        r = random.randint(0, settings.IMMIGRANT_POP_RATE)
         if r==0:
             x = random.randint(0, settings.STAGE_WIDTH-1)
-            self.create_immigrant(x)
+            at = Vector(x, settings.STAGE_HEIGHT-1)
+            ground = self.world.get_panel_on(at)
+            if ground.down:
+                self.create_immigrant(x, settings.STAGE_HEIGHT-1)
     def draw(self):
         map(lambda immigrant: immigrant.draw(), self.immigrants)

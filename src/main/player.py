@@ -6,6 +6,7 @@
 import settings
 import random
 from pygame.locals import *
+from pywaz.core.game import Game
 from pywaz.sprite.animation import Animation, AnimationInfo
 from pywaz.device.joypad import JoyPad
 from pywaz.device.key import Key
@@ -33,7 +34,7 @@ class Player(Panel):
         self.pressed_rotate_l = False
         self.cursol_counter_h = 0
         self.cursol_counter_v = 0
-        self.city = City(number, world)
+        self.city = City(self, world)
     def update(self):
         self.city.update()
         if not self.number == 0: return
@@ -78,6 +79,9 @@ class Player(Panel):
 #        if abs(yaxis) > 0.5:
 #            self.point.y += 1 if yaxis > 0 else -1
         self.current_road.point = self.point.clone()
+    def draw(self, surface=Game.get_screen()):
+        super(Player, self).draw(surface)
+        self.city.draw()
     def poll(self):
         if not self.number == 0: return 0
         return self._poll_key()

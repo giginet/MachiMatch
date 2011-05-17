@@ -11,7 +11,7 @@ from pywaz.utils.timer import Timer
 class GameTimer(Number):
     def __init__(self):
         self.timer = Timer(settings.FPS*settings.YEARS)
-        super(GameTimer, self).__init__(u"../resources/image/main/navigation/number.png", w=18, h=45)
+        super(GameTimer, self).__init__(u"../resources/image/main/navigation/timer.png", w=36, h=90)
         self.x, self.y = settings.TIMER_POSITON
         self.align = Number.TEXTALIGNCENTER
         self.n = int((self.timer.max-self.timer.now)/settings.FPS)

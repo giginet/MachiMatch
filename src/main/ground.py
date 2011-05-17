@@ -75,13 +75,14 @@ class Ground(Panel):
 class Territory(Ground):
     u"""領土クラス"""
     NODE = "1111"
-    IMAGEPATH = u"../resources/image/main/chips/ground.png"
+    IMAGEPATH = u"../resources/image/main/chips/territory.png"
     def __init__(self, x, y, owner):
         u"""
             owner : この領土を所持するPlayer
         """
         super(Territory, self).__init__(x, y)
         self.owner = owner
+        self.ainfo.index = owner.number
         owner.city.territories.append(self)
     def is_territory(self):
         return True
