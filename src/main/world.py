@@ -16,7 +16,7 @@ class World(object):
     u"""マップを管理するクラス"""
     def __init__(self, *args, **kwargs):
         self.players = []
-        self.player_count = kwargs.get('players')
+        self._player_count = kwargs.get('players')
         self.player_positions = []
         self.i_manager = ImmigrantManager(self)
         self.pause = False
@@ -141,3 +141,6 @@ class World(object):
                 winner = player
                 max = player.city.population
         return winner
+    @property
+    def player_count(self):
+        return self._player_count

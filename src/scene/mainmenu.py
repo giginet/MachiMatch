@@ -136,6 +136,6 @@ class MainMenuScene(Scene):
                 self.cursor_move[id] = False
             self.cursor_threshold[id] = [0, 0]
 # �{�^��
-#            for button_id in xrange(joypad.get_num_button()):
-#                if joypad.is_press(button_id):
-#                    self.actions[self.cursor_logical_y][self.cursor_logical_x]()
+            for button_id in xrange(joypad.get_num_button()):
+                if joypad.is_press(button_id):
+                    self.actions[self.cursor_logical_y][self.cursor_logical_x]()

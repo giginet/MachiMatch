@@ -56,6 +56,7 @@ class City(object):
             self.population -= p
         return p
     def _create_building(self):
+        u"""ビルを建てる"""
         if self.population <= 0: return
         if random.randint(0, settings.BUILDING_POP_RATE) != 0: return
         x = random.randint(0, 3)
@@ -99,6 +100,7 @@ class City(object):
                     b.draw()
                     rendered.append(b)
     def _flow_immigration(self, territory, front):
+        u"""移民を流出させる"""
         immigrant = self.world.i_manager.create_immigrant(territory.point.x, territory.point.y)
         p = self._calc_population()
         p = self.decrease_population(p)
@@ -118,4 +120,13 @@ class City(object):
         return list
     @property
     def root_point(self):
-        return Vector(self.owner.number*4, 0)
+        u"""街の左上の座標を返す"""
+        pc = self.world.player_count
+        if pc == 1:
+            return Vector(6, 0)
+        elif pc == 2:
+            return (Vector(2, 0), Vector(10, 0))[self.owner.number]
+        elif pc == 3:
+            return (Vector(1, 0), Vector(6, 0), Vector(11, 0))[self.owner.number]
+        elif pc == 4:
+            return Vector(self.owner.number*4, 0)
