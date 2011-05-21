@@ -1,4 +1,4 @@
-#Sat May 14 10:21:17 JST 2011
+#Tue May 17 22:55:37 JST 2011
 eclipse.preferences.version=1
 encoding//src/main.py=utf-8
 encoding//src/main/building.py=utf-8
@@ -13,6 +13,8 @@ encoding//src/main/player.py=utf-8
 encoding//src/main/roads.py=utf-8
 encoding//src/main/world.py=utf-8
 encoding//src/pywaz/device/joypad.py=utf-8
+encoding//src/pywaz/device/key.py=utf-8
+encoding//src/pywaz/device/mouse.py=utf-8
 encoding//src/pywaz/scene/abstractscene.py=utf-8
 encoding//src/pywaz/scene/manager.py=utf-8
 encoding//src/pywaz/sprite/animation.py=utf-8

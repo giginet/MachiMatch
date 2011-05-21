@@ -33,6 +33,8 @@ class Road(Ground):
         return True
     def on_attach(self):
         self.timer.play()
+    def can_attach_road(self):
+        return False
 class LShapeRoad(Road): 
     NODE = "1001"
     IMAGEPATH = "../resources/image/main/roads/LShape.png"

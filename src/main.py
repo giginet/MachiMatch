@@ -27,7 +27,6 @@ def main():
         game.get_scene_manager().change_scene('logo')
     while 1:
         game._clock.tick(settings.FPS)
-        Key.poll()
         scene = game.current_scene()
         if not scene: return
         game.update()

@@ -18,6 +18,7 @@ class World(object):
         self.player_count = 4
         self.player_positions = []
         self.i_manager = ImmigrantManager(self)
+        self.pause = False
         for n in xrange(0,self.player_count):
             p = Player(n, self)
             self.players.append(p)
@@ -25,16 +26,13 @@ class World(object):
         self._generate_stage()
     def _generate_stage(self):
         u"""ステージを生成する"""
-        self._map = []
+        self._map = [[None for col in range(settings.STAGE_HEIGHT)] for row in range(settings.STAGE_WIDTH)] # 二次配列を生成してNoneで初期化
         for x in xrange(settings.STAGE_WIDTH):
-            row = []
             for y in xrange(settings.STAGE_HEIGHT):
                 if y < 4:
-                    panel = self._generate_territory(x, y) # ゲーム参加人数によって領土を置くかどうか調査
+                    self._map[x][y] = self._generate_territory(x, y) # ゲーム参加人数によって領土を置くかどうか調査
                 else:
-                    panel = Ground(x, y)
-                row.append(panel)
-            self._map.append(row)
+                    self._map[x][y] = Ground(x, y)
     def _generate_territory(self, x, y):
         u"""
             x, yの位置に設置されるTerritoryを返す
@@ -96,7 +94,7 @@ class World(object):
         self.i_manager.draw()
         return pygame.rect.Rect(settings.ROOT_POSITION[1], settings.ROOT_POSITION[0]-settings.STAGE_HEIGHT*20, 
                                 settings.STAGE_HEIGHT*20, settings.STAGE_WIDTH*20)
-    def _replace_panel(self, panel):
+    def replace_panel(self, panel):
         u"""Map上のパネルを置き換える"""
         x = panel.point.x
         y = panel.point.y
@@ -113,17 +111,7 @@ class World(object):
             for panel in col:
                 if panel.is_road() and panel.update() == 1:
                     ground = Ground(panel.point.x, panel.point.y)
-                    self._replace_panel(ground)
-        for player in self.players:
-            player.update()
-            p = player.poll()
-            u"""p=0のとき、何もしない、p=1のとき、右回転、p=2のとき設置、p=-1のとき左回転"""
-            if p == 2:
-                if self.get_panel_on(player.point).can_attach_road():
-                    self._replace_panel(player.current_road)
-                    player.attach_road()
-            elif p!=0:
-                player.current_road.rotate(p)
+                    self.replace_panel(ground)
         self.i_manager.update()
     def get_panel_from(self, panel, direction):
         u"""
