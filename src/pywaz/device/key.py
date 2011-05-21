@@ -49,4 +49,4 @@ class Key(Device):
                 return -1
             if pygame.key.get_focused() and self._pressed_keys[K_RIGHT]:
                 return 1
-        return 0 
+        return 0

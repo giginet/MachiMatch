@@ -41,6 +41,10 @@ class JoyPad(Device):
         if not self.joy or id >= self.get_num_axes():
             return 0
         return self.joy.get_axis(id)
+    @staticmethod
+    def get_num_joypads():
+        return pygame.joystick.get_count()
+    
     
 class DisableJoy(Device):
     def __init__(self, id):

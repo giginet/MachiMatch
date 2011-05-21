@@ -20,7 +20,7 @@ from main.gametimer import GameTimer
 class GameScene(Scene):
     BACKGROUND = (153,255,255)
     def ready(self, *args, **kwargs):
-        self.world = World()
+        self.world = World(players=kwargs.get('players', 1))
         self.navigations = []
         self.timer = GameTimer()
         self.sequence_manager = SceneManager()

@@ -30,3 +30,5 @@ class Device(object):
     @property
     def type(self):
         return self._type
+    def get_num_button(self):
+        return self.numbuttons

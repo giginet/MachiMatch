@@ -16,7 +16,6 @@ class Mouse(Device):
     _type = Device.Mouse
     def __init__(self, id):
         self.id = id
-        self.devices[id] = self
     def is_press(self, key):
         return pygame.mouse.get_focused() and pygame.mouse.get_pressed()[key]
     def get_pos(self):

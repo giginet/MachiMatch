@@ -46,26 +46,26 @@ class Player(Panel):
         self.roads_queue = self._get_initial_roads_queue()
         self.current_road = self.get_next_road()
         self.next_road = self.get_next_road()
-        self.cursol_counter_h = 0
-        self.cursol_counter_v = 0
+        self.cursor_counter_h = 0
+        self.cursor_counter_v = 0
         self.city = City(self, world)
         self.device = JoyPad(number)
         self.mapping = self.KEYMAPPINGS[self.device.type]
-        self.cursol_threshold = [0, 0]
+        self.cursor_threshold = [0, 0]
     def update(self):
         self.city.update()
         xaxis = self.device.get_axis(0)
         yaxis = self.device.get_axis(1)
         if abs(xaxis) > 0.5:
-            self.cursol_threshold[0] += xaxis
+            self.cursor_threshold[0] += xaxis
         if abs(yaxis) > 0.5:
-            self.cursol_threshold[1] += yaxis
-        if abs(self.cursol_threshold[0]) > 1:
-            self.point.x += 1 if self.cursol_threshold[0] > 0 else -1
-            self.cursol_threshold[0] = 0
-        if abs(self.cursol_threshold[1]) > 1:
-            self.point.y += 1 if self.cursol_threshold[1] > 0 else -1
-            self.cursol_threshold[1] = 0
+            self.cursor_threshold[1] += yaxis
+        if abs(self.cursor_threshold[0]) > 1:
+            self.point.x += 1 if self.cursor_threshold[0] > 0 else -1
+            self.cursor_threshold[0] = 0
+        if abs(self.cursor_threshold[1]) > 1:
+            self.point.y += 1 if self.cursor_threshold[1] > 0 else -1
+            self.cursor_threshold[1] = 0
             
         if self.point.x < 0:
             self.point.x = 0

@@ -16,7 +16,7 @@ class World(object):
     u"""マップを管理するクラス"""
     def __init__(self, *args, **kwargs):
         self.players = []
-        self.player_count = 4
+        self.player_count = kwargs.get('players')
         self.player_positions = []
         self.i_manager = ImmigrantManager(self)
         self.pause = False

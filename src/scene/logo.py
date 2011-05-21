@@ -21,16 +21,17 @@ class LogoScene(Scene):
         super(LogoScene, self).ready()
         self.background = Image("../resources/image/menu/whiteback.png", alpha=False)
         self.logo = Image("../resources/image/menu/kawaz.png", alpha=False)
-        self.logo.x = 273
-        self.logo.y = 260
+        self.logo.x = 340
+        self.logo.y = 230
         self.sprites.add(self.background)
         self.sprites.add(self.logo)
         self.timer = Timer(210)
+        self.mouse = Mouse(0)
         
     def update(self):
         self.timer.tick()
         self.timer.play()
-        if self.timer.is_over() or Mouse.is_press('LEFT'):
+        if self.timer.is_over() or self.mouse.is_press(Mouse.LEFT):
             Game.get_scene_manager().change_scene('mainmenu')
         elif self.timer.now < 60:
             self.logo.alpha = 255*self.timer.now/60
