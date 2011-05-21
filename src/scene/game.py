@@ -75,6 +75,18 @@ class GameSequence(Sequence):
             self.text.y -=30
         if self.scene.timer.is_over():
             self.scene.sequence_manager.change_scene('result')
+        for player in self.scene.world.players:
+            player.update()
+            p = player.poll()
+            u"""p=0のとき、何もしない、p=1のとき、右回転、p=2のとき設置、p=-1のとき左回転p=3のときポーズ"""
+            if p == 3:
+                self.scene.sequence_manager.change_scene('pause')
+            elif p == 2:
+                if self.scene.world.get_panel_on(player.point).can_attach_road():
+                    self.scene.world.replace_panel(player.current_road)
+                    player.attach_road()
+            elif p!=0:
+                player.current_road.rotate(p)
         self.scene.world.update()
         map(lambda n: n.update(), self.scene.navigations)
         self.scene.timer.update()
@@ -109,4 +121,17 @@ class ResultSequence(Sequence):
         self.win.draw()
         return rect
 class PauseSequence(Sequence):
-    pass
+    def ready(self):
+        self.text.ainfo.index = 2
+    def draw(self):
+        rect = self.scene.world.draw()
+        map(lambda n: n.draw(), self.scene.navigations)
+        self.scene.timer.draw()
+        self.text.draw()
+        return rect
+    def update(self):
+        for player in self.scene.world.players:
+            p = player.poll()
+            u"""p=0のとき、何もしない、p=1のとき、右回転、p=2のとき設置、p=-1のとき左回転p=3のときポーズ"""
+            if p == 3:
+                self.scene.sequence_manager.change_scene('game')
