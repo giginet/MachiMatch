@@ -52,21 +52,25 @@ class Player(Panel):
         self.device = JoyPad(number)
         self.mapping = self.KEYMAPPINGS[self.device.type]
         self.cursor_threshold = [0, 0]
+        self.cursor_move = False
     def update(self):
         self.city.update()
         xaxis = self.device.get_axis(0)
         yaxis = self.device.get_axis(1)
+        length = sum(map(lambda x: x*x, list(self.cursor_threshold)))
         if abs(xaxis) > 0.5:
             self.cursor_threshold[0] += xaxis
+            if not self.cursor_move or abs(length) > 16:
+                self.point.x += 1 if xaxis > 0 else -1
         if abs(yaxis) > 0.5:
             self.cursor_threshold[1] += yaxis
-        if abs(self.cursor_threshold[0]) > 1:
-            self.point.x += 1 if self.cursor_threshold[0] > 0 else -1
-            self.cursor_threshold[0] = 0
-        if abs(self.cursor_threshold[1]) > 1:
-            self.point.y += 1 if self.cursor_threshold[1] > 0 else -1
-            self.cursor_threshold[1] = 0
-            
+            if not self.cursor_move or abs(length) > 16:
+                self.point.y += 1 if yaxis > 0 else -1
+        if abs(xaxis) > 0.5 or abs(yaxis) > 0.5:
+            self.cursor_move = True
+        else:
+            self.cursor_move = False
+            self.cursor_threshold = [0, 0]
         if self.point.x < 0:
             self.point.x = 0
         elif self.point.x > settings.STAGE_WIDTH-1:

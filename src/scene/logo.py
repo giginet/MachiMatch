@@ -8,12 +8,9 @@ import pygame
 from pywaz.scene.abstractscene import Scene
 from pywaz.core.game import Game
 from pywaz.sprite.image import Image
-from pywaz.sprite.animation import Animation, AnimationInfo
-from pywaz.mixer.bgm import BGM
-from pywaz.utils.vector import Vector
 from pywaz.utils.timer import Timer
 from pywaz.device.mouse import Mouse
-from pywaz.sprite.button import Button
+from pywaz.device.joypad import JoyPad
 
 class LogoScene(Scene):
     BACKGROUND = (255,255,255)
@@ -27,11 +24,16 @@ class LogoScene(Scene):
         self.sprites.add(self.logo)
         self.timer = Timer(210)
         self.mouse = Mouse(0)
-        
+        self.joypads = [] 
+        for i in xrange(0, JoyPad.get_num_joypads()):
+            self.joypads.append(JoyPad(i))        
     def update(self):
         self.timer.tick()
         self.timer.play()
-        if self.timer.is_over() or self.mouse.is_press(Mouse.LEFT):
+        skip = self.mouse.is_press(Mouse.LEFT)
+        for joypad in self.joypads:
+            skip |= joypad.is_press(4)
+        if self.timer.is_over() or skip:
             Game.get_scene_manager().change_scene('mainmenu')
         elif self.timer.now < 60:
             self.logo.alpha = 255*self.timer.now/60
