@@ -9,6 +9,7 @@ import settings
 from ground import Ground, Territory, Dummy
 from immigrantManager import ImmigrantManager
 from player import Player
+from main.roads import IShapeRoad
 
 
 class World(object):
@@ -31,6 +32,10 @@ class World(object):
             for y in xrange(settings.STAGE_HEIGHT):
                 if y < 4:
                     self._map[x][y] = self._generate_territory(x, y) # ゲーム参加人数によって領土を置くかどうか調査
+                elif y == settings.STAGE_HEIGHT-1:
+                    road = IShapeRoad(x, y)
+                    road.rotate(1)
+                    self._map[x][y] = road
                 else:
                     self._map[x][y] = Ground(x, y)
     def _generate_territory(self, x, y):
