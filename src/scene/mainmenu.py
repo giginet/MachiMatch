@@ -78,9 +78,11 @@ class MainMenuScene(Scene):
     def start_game(self, player_number):
         # TODO: �����ɁA�Q�[����ʂֈړ�����R�[�h������
         Game.get_scene_manager().change_scene('game', players=player_number)
+        self.bgm.fadeout(100)
     
     def ready(self, *args, **kwargs):
         super(MainMenuScene, self).ready()
+        self.bgm = BGM(u'../resources/music/title.mp3', -1)
         self.num_joypads = JoyPad.get_num_joypads()
         self.joypads = [] 
         for i in xrange(0, self.num_joypads):
@@ -139,6 +141,7 @@ class MainMenuScene(Scene):
             self.last_press_key.append({})
     
     def update(self):
+        self.bgm.play()
         # Joypad�ɂ��J�[�\������
         # �eJoypad�ɂ��ē������`�F�b�N����
         for id, joypad in enumerate(self.joypads):
