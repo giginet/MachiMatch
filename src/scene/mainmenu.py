@@ -25,11 +25,11 @@ from pywaz.device.key import Key
 
 class MainMenuScene(Scene):
     BACKGROUND = (255,255,255)
-    CURSOR_BORDER = 10 # �J�[�\����\���摜���A�I������\���摜����ǂꂾ�����炵�Ĕz�u����邩
+    CURSOR_BORDER = 10 # カーソルを表す画像が、選択肢を表す画像からどれだけずらして配置されるか
     IMAGE_PATH = "../resources/image/menu"
-    KEY_REPEAT_TIME = 0.2 # ���b�ȓ��̊ԂȂ�A�L�[�������ꑱ���Ă��Ă��A�łƂ݂Ȃ��Ȃ���
+    KEY_REPEAT_TIME = 0.2 # 何秒以内の間なら、キーが押され続けていても連打とみなさないか
     
-    # 2Players, 3Players, 4Players�̉摜��ǂݍ���
+    # 2Players, 3Players, 4Playersの画像を読み込む
     def load_player_selection(self, joypad_number):
         fail = ("" if joypad_number >= 2 else "x")
         self.player2 = Image(os.path.join(self.IMAGE_PATH, "player2%s.png" % fail), alpha=False)
@@ -40,32 +40,31 @@ class MainMenuScene(Scene):
         fail = ("" if joypad_number >= 4 else "x")
         self.player4 = Image(os.path.join(self.IMAGE_PATH, "player4%s.png" % fail), alpha=False)
     
-    # �J�[�\����x����dir_x�Ay����dir_y����������
+    # カーソルをx方向にdir_x、y方向にdir_yだけ動かす
     def set_cursor_pos(self, dir_x, dir_y):
         target_option = False
         while not target_option:
-            # y���
+            # y方向
             self.cursor_logical_y += dir_y
             if self.cursor_logical_y < 0:
                 self.cursor_logical_y += len(self.options)
             if self.cursor_logical_y >= len(self.options):
                 self.cursor_logical_y -= len(self.options)
             
-            # x���
+            # x方向
             self.cursor_logical_x += dir_x
             if self.cursor_logical_x < 0:
                 self.cursor_logical_x += len(self.options[self.cursor_logical_y])
             if self.cursor_logical_x >= len(self.options[self.cursor_logical_y]):
                 self.cursor_logical_x -= len(self.options[self.cursor_logical_y])
             
-            # �`��ʒu�̌v�Z
+            # 描画位置の計算
             target_option = self.options[self.cursor_logical_y][self.cursor_logical_x]
         self.cursor.x = target_option.x - self.CURSOR_BORDER
         self.cursor.y = target_option.y - self.CURSOR_BORDER
     
-    # �Q�[�����n�߂�
+    # ゲームを始める
     def start_game(self, player_number):
-        # TODO: �����ɁA�Q�[����ʂֈړ�����R�[�h������
         Game.get_scene_manager().change_scene('game', players=player_number)
         self.bgm.fadeout(100)
     
@@ -89,7 +88,7 @@ class MainMenuScene(Scene):
         self.player4.x = 600; self.player4.y = 400
         self.config.x  = 380; self.config.y  = 460
         self.exit.x    = 600; self.exit.y    = 460
-        # �J�[�\���ʒu������
+        # カーソル位置を初期化
         self.options = ((self.player2, self.player3, self.player4),
                         (None, self.config, self.exit))
         self.actions = ((lambda:self.start_game(2), # self.player2
@@ -135,6 +134,6 @@ class MainMenuScene(Scene):
             else:
                 self.cursor_move[id] = False
             self.cursor_threshold[id] = [0, 0]
-# �{�^��
+            
             if joypad.is_press(11):
                 self.actions[self.cursor_logical_y][self.cursor_logical_x]()
