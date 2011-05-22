@@ -81,9 +81,6 @@ class Player(Panel):
             self.point.y = settings.STAGE_HEIGHT-1
         self.current_road.point = self.point.clone()
         if not self.device.joy: return
-        for k in xrange(0, self.device.joy.get_numbuttons()):
-            if self.device.joy.get_button(k):
-                print "press:%d" % k
     def draw(self, surface=Game.get_screen()):
         super(Player, self).draw(surface)
         self.city.draw()

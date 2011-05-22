@@ -22,3 +22,5 @@ class GameTimer(Number):
         self.timer.play()
     def is_over(self):
         return self.timer.is_over()
+    def reset(self):
+        self.timer.reset()

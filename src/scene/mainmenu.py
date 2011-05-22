@@ -13,15 +13,10 @@ from pygame.locals import *
 from pywaz.scene.abstractscene import Scene
 from pywaz.core.game import Game
 from pywaz.sprite.image import Image
-from pywaz.sprite.animation import Animation, AnimationInfo
 from pywaz.mixer.bgm import BGM
-from pywaz.utils.vector import Vector
-from pywaz.utils.timer import Timer
-from pywaz.device.mouse import Mouse
-from pywaz.sprite.button import Button
+from pywaz.mixer.sound import Sound
 from pywaz.device.joypad import JoyPad
-from pywaz.device.key import Key
-
+from pywaz.utils.timer import Timer
 
 class MainMenuScene(Scene):
     BACKGROUND = (255,255,255)
@@ -65,12 +60,14 @@ class MainMenuScene(Scene):
     
     # ゲームを始める
     def start_game(self, player_number):
-        Game.get_scene_manager().change_scene('game', players=player_number)
-        self.bgm.fadeout(100)
-    
+        self.decide_timer.play()
+        self.decide_sound.play()
+        self.player_number = player_number
     def ready(self, *args, **kwargs):
         super(MainMenuScene, self).ready()
         self.bgm = BGM(u'../resources/music/title.mp3', -1)
+        self.decide_sound = Sound('../resources/sound/decide.wav')
+        self.decide_timer = Timer(settings.FPS*2.5)
         self.num_joypads = JoyPad.get_num_joypads()
         self.joypads = [] 
         for i in xrange(0, self.num_joypads):
@@ -116,6 +113,11 @@ class MainMenuScene(Scene):
             self.last_press_key.append({})
     
     def update(self):
+        self.decide_timer.tick()
+        if self.decide_timer.is_over():
+            Game.get_scene_manager().change_scene('game', players=self.player_number)
+            self.bgm.fadeout(100)
+        if self.decide_timer.is_active(): return
         self.bgm.play()
         for id, joypad in enumerate(self.joypads):
             xaxis = joypad.get_axis(0)

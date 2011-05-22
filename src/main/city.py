@@ -7,9 +7,10 @@ import settings
 import random
 from pywaz.utils.timer import Timer
 from pywaz.utils.vector import Vector
+from pywaz.mixer.sound import Sound
 from main.building import *;
 class City(object):
-    u"""街クラス。人口や発展状況などを管理する"""
+    u"""街クラス。人口や発展状況などを管理する"""    
     def __init__(self, owner, world):
         u"""
             owner : この街を所持するプレイヤー
@@ -17,6 +18,7 @@ class City(object):
         """
         self.owner = owner
         self.world = world
+        self.levelup_sound = Sound("../resources/sound/levelup.wav")
         self.population = 0
         self.level = 1
         self.buildings = []
@@ -40,6 +42,7 @@ class City(object):
         else:
             self.population += p
         if self.level < 5 and settings.LEVELUP_BORDERLINES[self.level] < self.population:
+            self.levelup_sound.play()
             self.level +=1
             print "LevelUp! %d" % self.level
     def decrease_population(self, p):

@@ -20,8 +20,7 @@ from main.gametimer import GameTimer
 class GameScene(Scene):
     BACKGROUND = (153,255,255)
     def ready(self, *args, **kwargs):
-        self.world = World(players=kwargs.get('players', 1))
-        self.navigations = []
+        self.num_players = kwargs.get('players', 1)
         self.timer = GameTimer()
         self.sequence_manager = SceneManager()
         self.sequence_manager.set_scenes({'ready':ReadySequence(self),
@@ -31,8 +30,6 @@ class GameScene(Scene):
                                           })
         self.bgm = BGM(u"../resources/music/main_intro.wav", -1, u"../resources/music/main_loop.wav")
         self.sequence_manager.change_scene('ready')
-        for player in self.world.players:
-            self.navigations.append(Navigation(player))
         self.timer.play()
     def update(self):
         self.sequence_manager.current_scene.update()
@@ -52,7 +49,14 @@ class Sequence(Scene):
         self.text.y = settings.SCREENHEIGHT/2-180
 class ReadySequence(Sequence):
     def ready(self):
+        self.scene.world = World(players=self.scene.num_players)
+        self.scene.navigations = []
+        for player in self.scene.world.players:
+            self.scene.navigations.append(Navigation(player))
+        self.text.ainfo.index = 0
         self.scene.bgm.set_volume(0.7)
+        self.scene.timer.reset()
+        self.scene.timer.update()
         self.ready_timer = Timer(settings.FPS*3)
         self.ready_timer.play()
     def update(self):
@@ -63,6 +67,9 @@ class ReadySequence(Sequence):
         elif self.ready_timer.now >= settings.FPS*2:
             self.text.ainfo.index = 1
             self.scene.sequence_manager.change_scene('game')
+            self.scene.sequence_manager.current_scene.text.x = settings.SCREENWIDTH/2-180
+            self.scene.sequence_manager.current_scene.text.y = settings.SCREENHEIGHT/2-180
+        
     def draw(self):
         rect = self.scene.world.draw()
         map(lambda n: n.draw(), self.scene.navigations)
@@ -110,18 +117,27 @@ class GameSequence(Sequence):
 class ResultSequence(Sequence):
     def ready(self):
         self.win = Animation(u"../resources/image/main/text/win.png", AnimationInfo(-1, 0, 1, 360, 225, 1))
+        finish_sound = Sound("../resources/sound/finish.wav")
+        finish_sound.play()
         self.win.animation_enable = False
         self.win.x = settings.SCREENWIDTH/2-180
         self.win.y = settings.SCREENHEIGHT/2-180
         self.text.ainfo.index = 3
         self.winner = self.scene.world.get_winner()
-        self.result_timer = Timer(settings.FPS*2)
+        self.result_timer = Timer(settings.FPS*2.5)
         self.result_timer.play()
     def update(self):
         self.result_timer.tick()
-        if self.result_timer.now == settings.FPS*2:
+        if self.result_timer.now == settings.FPS*2.5:
             self.text.ainfo.index = -1
+            self.scene.bgm.fadeout(100)
             self.win.ainfo.index = self.winner.number
+        for player in self.scene.world.players:
+            p = player.poll()
+            u"""p=3のとき、リプレイ"""
+            if self.result_timer.is_over() and p == 3:
+                self.scene.bgm.change(u"../resources/music/main_intro.wav", -1, u"../resources/music/main_loop.wav")
+                self.scene.sequence_manager.change_scene('ready')
         #ToDo Retry or Title
     def draw(self):
         rect = self.scene.world.draw()

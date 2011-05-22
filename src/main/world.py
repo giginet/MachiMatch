@@ -17,9 +17,11 @@ class World(object):
     def __init__(self, *args, **kwargs):
         self.players = []
         self._player_count = kwargs.get('players')
+        self.refresh()
+    def refresh(self):
+        u"""ステージをリセットする"""
         self.player_positions = []
         self.i_manager = ImmigrantManager(self)
-        self.pause = False
         for n in xrange(0,self.player_count):
             p = Player(n, self)
             self.players.append(p)

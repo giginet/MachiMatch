@@ -12,7 +12,6 @@ class JoyPad(Device):
     pygame.joystick.init()
     
     def __init__(self, id):
-        print pygame.joystick.get_count()
         if pygame.joystick.get_count() > id:
             self.joy = pygame.joystick.Joystick(id)
             self.joy.init()
