@@ -12,7 +12,7 @@ from player import Player
 from main.roads import IShapeRoad
 
 
-class World(object):
+class World(object): 
     u"""マップを管理するクラス"""
     def __init__(self, *args, **kwargs):
         self.players = []

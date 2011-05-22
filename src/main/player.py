@@ -34,7 +34,7 @@ class Player(Panel):
                                   'x':9,
                                   'c':11,
                                   'START':4
-                                  }}    
+                                  }}
     def __init__(self, number, world):
         u"""
             number : Player番号。0~3

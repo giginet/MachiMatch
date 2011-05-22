@@ -6,7 +6,7 @@
 import settings
 import pygame
 
-from pywaz.sprite.image import Image
+from pywaz.mixer.sound import Sound
 from pywaz.sprite.animation import Animation, AnimationInfo
 from pywaz.mixer.bgm import BGM
 from pywaz.scene.manager import SceneManager
@@ -29,6 +29,7 @@ class GameScene(Scene):
                                           'result':ResultSequence(self),
                                           'pause':PauseSequence(self),
                                           })
+        self.bgm = BGM(u"../resources/music/main_intro.wav", -1, u"../resources/music/main_loop.wav")
         self.sequence_manager.change_scene('ready')
         for player in self.world.players:
             self.navigations.append(Navigation(player))
@@ -51,9 +52,11 @@ class Sequence(Scene):
         self.text.y = settings.SCREENHEIGHT/2-180
 class ReadySequence(Sequence):
     def ready(self):
+        self.scene.bgm.set_volume(0.7)
         self.ready_timer = Timer(settings.FPS*3)
         self.ready_timer.play()
     def update(self):
+        self.scene.bgm.play()
         self.ready_timer.tick()
         if self.ready_timer.now == settings.FPS*1:
             self.text.ainfo.index = 0
@@ -68,9 +71,13 @@ class ReadySequence(Sequence):
         return rect
 class GameSequence(Sequence):
     def ready(self):
-        self.scene.timer.play()
         self.text.ainfo.index = 1
+        self.scene.bgm.set_volume(1)
+        self.rotate_sound = Sound(u"../resources/sound/rotate.wav")
+        self.attach_sound = Sound(u"../resources/sound/attach.wav")
+        self.pause_sound = Sound(u"../resources/sound/pause.wav")
     def update(self):
+        self.scene.bgm.play()
         if self.text.y > -360:
             self.text.y -=30
         if self.scene.timer.is_over():
@@ -80,12 +87,15 @@ class GameSequence(Sequence):
             p = player.poll()
             u"""p=0のとき、何もしない、p=1のとき、右回転、p=2のとき設置、p=-1のとき左回転p=3のときポーズ"""
             if p == 3:
+                self.pause_sound.play()
                 self.scene.sequence_manager.change_scene('pause')
             elif p == 2:
                 if self.scene.world.get_panel_on(player.point).can_attach_road():
                     self.scene.world.replace_panel(player.current_road)
+                    self.attach_sound.play()
                     player.attach_road()
             elif p!=0:
+                self.rotate_sound.play()
                 player.current_road.rotate(p)
         self.scene.world.update()
         map(lambda n: n.update(), self.scene.navigations)
@@ -123,6 +133,7 @@ class ResultSequence(Sequence):
 class PauseSequence(Sequence):
     def ready(self):
         self.text.ainfo.index = 2
+        self.scene.bgm.set_volume(0.4)
     def draw(self):
         rect = self.scene.world.draw()
         map(lambda n: n.draw(), self.scene.navigations)
@@ -130,6 +141,7 @@ class PauseSequence(Sequence):
         self.text.draw()
         return rect
     def update(self):
+        self.scene.bgm.play()
         for player in self.scene.world.players:
             p = player.poll()
             u"""p=0のとき、何もしない、p=1のとき、右回転、p=2のとき設置、p=-1のとき左回転p=3のときポーズ"""
