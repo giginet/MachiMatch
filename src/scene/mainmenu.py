@@ -57,7 +57,6 @@ class MainMenuScene(Scene):
             target_option = self.options[self.cursor_logical_y][self.cursor_logical_x]
         self.cursor.x = target_option.x - self.CURSOR_BORDER
         self.cursor.y = target_option.y - self.CURSOR_BORDER
-    
     # ゲームを始める
     def start_game(self, player_number):
         self.decide_timer.play()
@@ -66,6 +65,7 @@ class MainMenuScene(Scene):
     def ready(self, *args, **kwargs):
         super(MainMenuScene, self).ready()
         self.bgm = BGM(u'../resources/music/title.mp3', -1)
+        self.cursor_sound = Sound("../resources/sound/cursor.wav")
         self.decide_sound = Sound('../resources/sound/decide.wav')
         self.decide_timer = Timer(settings.FPS*2.5)
         self.num_joypads = JoyPad.get_num_joypads()
@@ -126,16 +126,17 @@ class MainMenuScene(Scene):
             if abs(xaxis) > 0.5:
                 self.cursor_threshold[id][0] += xaxis
                 if not self.cursor_move[id] or abs(length) > 16:
+                    self.cursor_sound.play()
                     self.set_cursor_pos(1 if xaxis > 0 else - 1, 0)
             if abs(yaxis) > 0.5:
                 self.cursor_threshold[id][1] += yaxis
                 if not self.cursor_move[id] or abs(length) > 16:
+                    self.cursor_sound.play()
                     self.set_cursor_pos(0, 1 if yaxis > 0 else - 1)
             if abs(xaxis) > 0.5 or abs(yaxis) > 0.5:
                 self.cursor_move[id] = True
             else:
                 self.cursor_move[id] = False
             self.cursor_threshold[id] = [0, 0]
-            
             if joypad.is_press(11):
                 self.actions[self.cursor_logical_y][self.cursor_logical_x]()

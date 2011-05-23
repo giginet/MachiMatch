@@ -55,6 +55,7 @@ class ReadySequence(Sequence):
             self.scene.navigations.append(Navigation(player))
         self.text.ainfo.index = 0
         self.scene.bgm.set_volume(0.7)
+        self.start_sound = Sound("../resources/sound/start.wav")
         self.scene.timer.reset()
         self.scene.timer.update()
         self.ready_timer = Timer(settings.FPS*3)
@@ -66,6 +67,7 @@ class ReadySequence(Sequence):
             self.text.ainfo.index = 0
         elif self.ready_timer.now >= settings.FPS*2:
             self.text.ainfo.index = 1
+            self.start_sound.play()
             self.scene.sequence_manager.change_scene('game')
             self.scene.sequence_manager.current_scene.text.x = settings.SCREENWIDTH/2-180
             self.scene.sequence_manager.current_scene.text.y = settings.SCREENHEIGHT/2-180

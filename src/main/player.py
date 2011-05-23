@@ -35,6 +35,25 @@ class Player(Panel):
                                   'c':11,
                                   'START':4
                                   }}
+    PAD_TYPE = [0, 0, 1, 1]
+    KEYMAPPINGS_PADS = [{'up':0,
+                        'down':1,
+                        'right':2,
+                        'left':3,
+                        'z':8,
+                        'x':9,
+                        'c':11,
+                        'START':4
+                        },
+                        {'up':0,
+                        'down':1,
+                        'right':7,
+                        'left':6,
+                        'z':6,
+                        'x':7,
+                        'c':1,
+                        'START':9
+                        }]
     def __init__(self, number, world):
         u"""
             number : Player番号。0~3
@@ -50,13 +69,18 @@ class Player(Panel):
         self.cursor_counter_v = 0
         self.city = City(self, world)
         self.device = JoyPad(number)
-        self.mapping = self.KEYMAPPINGS[self.device.type]
+        self.pad_type = self.PAD_TYPE[self.device.id]
+        self.mapping = self.KEYMAPPINGS_PADS[self.pad_type]
         self.cursor_threshold = [0, 0]
         self.cursor_move = False
     def update(self):
         self.city.update()
-        xaxis = self.device.get_axis(0)
-        yaxis = self.device.get_axis(1)
+        if self.pad_type == 0:
+            xaxis = self.device.get_axis(0)
+            yaxis = self.device.get_axis(1)
+        else:
+            xaxis = self.device.get_axis(2)
+            yaxis = self.device.get_axis(3)    
         length = sum(map(lambda x: x*x, list(self.cursor_threshold)))
         if abs(xaxis) > 0.5:
             self.cursor_threshold[0] += xaxis

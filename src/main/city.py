@@ -19,6 +19,7 @@ class City(object):
         self.owner = owner
         self.world = world
         self.levelup_sound = Sound("../resources/sound/levelup.wav")
+        self.increase_sound = Sound("../resources/sound/increase.wav")
         self.population = 0
         self.level = 1
         self.buildings = []
@@ -45,6 +46,8 @@ class City(object):
             self.levelup_sound.play()
             self.level +=1
             print "LevelUp! %d" % self.level
+        else:
+            self.increase_sound.play()
     def decrease_population(self, p):
         u"""
             p人人口を減らす
