@@ -64,7 +64,7 @@ class MainMenuScene(Scene):
         self.player_number = player_number
     def ready(self, *args, **kwargs):
         super(MainMenuScene, self).ready()
-        self.bgm = BGM(u'../resources/music/title.mp3', -1)
+        self.bgm = BGM(u'../resources/music/title.wav', -1)
         self.cursor_sound = Sound("../resources/sound/cursor.wav")
         self.decide_sound = Sound('../resources/sound/decide.wav')
         self.decide_timer = Timer(settings.FPS*2.5)

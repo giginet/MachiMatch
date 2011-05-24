@@ -25,13 +25,7 @@ class City(object):
         self.buildings = []
         self.territories = []
         self.flow_timer = Timer(settings.FPS*settings.FLOW_POPULATION_YEAR)
-        self.building_matrix = []
-        for x in xrange(0, 4):
-            row = []
-            for y in xrange(0, 4):
-                u"""領土内相対座標の二次配列作成"""
-                row.append(None)
-            self.building_matrix.append(row)
+        self.building_matrix = [[None for col in range(settings.STAGE_HEIGHT)] for row in range(settings.STAGE_WIDTH)] # 二次配列を生成してNoneで初期化
     def increase_population(self, p=None):
         u"""人口を増やす。その後、レベルアップの判定をする
             増える人口はレベルに依存する。 p*2^(lv-1)
@@ -61,19 +55,29 @@ class City(object):
         else:
             self.population -= p
         return p
-    def _create_building(self):
+    def _pop_building(self):
         u"""ビルを建てる"""
         if self.population <= 0: return
         if random.randint(0, settings.BUILDING_POP_RATE) != 0: return
-        x = random.randint(0, 3)
-        y = random.randint(0, 3)
+        buildings = LEVEL_BUILDINGS[self.level-1]
+        if len(buildings) == 0: return
+        if self.level <= 2:
+            x = random.randint(0, 3)
+            y = random.randint(0, 3)
+        elif self.level <= 4:
+            x, y = random.choice(((0, 0), (2, 0), (0, 2), (2, 2)))
+        elif self.level == 5:
+            x, y = (0, 0)
         if not self.building_matrix[x][y] or (self.building_matrix[x][y] and self.building_matrix[x][y].level != self.level):
-            bs = LEVEL_BUILDINGS[self.level-1]
-            if len(bs) == 0: return
-            building = random.choice(bs)(self.root_point.x+x, self.root_point.y+y)
-            for sx in xrange(x, x+building.size):
-                for sy in xrange(y, y+building.size):
-                    self.building_matrix[sx][sy] = building
+                building = random.choice(buildings)
+                self._constract_building(building, x, y)
+    def _constract_building(self, cls, x, y):
+        building = cls(self.root_point.x+x, self.root_point.y+y)
+        for sx in xrange(x, x+building.size):
+            for sy in xrange(y, y+building.size):
+                self.building_matrix[sx][sy] = building
+        self.buildings.append(building)
+    
     def _calc_population(self):
         u"""レベルに応じた増減する人口を算出する"""
         p = random.randint(8000, 12000)
@@ -89,7 +93,7 @@ class City(object):
                 front = self.world.get_panel_from(territory, 2)
                 if territory.is_connect_with(front):
                     self._flow_immigration(territory, front)
-        self._create_building()
+        self._pop_building()
         updated = []
         for x in xrange(0, 4):
             for y in xrange(0, 4):

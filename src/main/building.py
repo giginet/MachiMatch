@@ -48,9 +48,44 @@ class WoodCabin(Building):
     IMAGEPATH = u"../resources/image/main/buildings/woodcabin.png"
     LEVEL = 2
     OFFSET = (0, 25)
+
+class BuildingWhite(Building):
+    IMAGEPATH = u"../resources/image/main/buildings/building_white.png"
+    IMAGEWIDTH = 150
+    IMAGEHEIGHT = 200
+    LEVEL = 3
+    OFFSET = (40, 100)
+
+class BuildingBrown(Building):
+    IMAGEPATH = u"../resources/image/main/buildings/building_brown.png"
+    IMAGEWIDTH = 150
+    IMAGEHEIGHT = 200
+    LEVEL = 3
+    OFFSET = (40, 100)
+    
+class Kawaztan(Building):
+    IMAGEPATH = u"../resources/image/main/buildings/kawaztan.png"
+    IMAGEWIDTH = 150
+    IMAGEHEIGHT = 250
+    LEVEL = 4
+    OFFSET = (40, 150)
+    
+class Castle(Building):
+    IMAGEPATH = u"../resources/image/main/buildings/castle.png"
+    IMAGEWIDTH = 280
+    IMAGEHEIGHT = 320
+    LEVEL = 5
+    OFFSET = (100, 165)
+
+class OrientalCastle(Building):
+    IMAGEPATH = u"../resources/image/main/buildings/oriental.png"
+    IMAGEWIDTH = 300
+    IMAGEHEIGHT = 350
+    LEVEL = 5
+    OFFSET = (110, 170)
     
 LEVEL_BUILDINGS = ((Tent,), 
                    (WoodCabin,),
-                   (),
-                   (),
-                   ())
+                   (BuildingWhite, BuildingBrown,),
+                   (Kawaztan,),
+                   (Castle, OrientalCastle))

@@ -16,7 +16,7 @@ from main.city import City
 
 class Player(Panel):
     u"""プレイヤークラス"""
-    IMAGEPATH = u"../resources/image/main/player0.png"
+    IMAGEPATH = u"../resources/image/main/players.png"
     KEYMAPPINGS = {Device.Key:{'up':K_UP,
                                'down':K_DOWN,
                                'right':K_RIGHT,
@@ -73,6 +73,8 @@ class Player(Panel):
         self.mapping = self.KEYMAPPINGS_PADS[self.pad_type]
         self.cursor_threshold = [0, 0]
         self.cursor_move = False
+        self.ainfo.index = self.number
+        self.point = self.city.root_point.clone()
     def update(self):
         self.city.update()
         if self.pad_type == 0:

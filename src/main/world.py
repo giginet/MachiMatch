@@ -90,7 +90,7 @@ class World(object):
         u"""マップを描画する"""
         for col in self._map:
             for panel in col:
-                if panel.point in self.player_positions:
+                if panel.point in self.player_positions and panel.can_attach_road():
                     for player in self.players:
                         if player.point == panel.point:
                             player.current_road.draw()

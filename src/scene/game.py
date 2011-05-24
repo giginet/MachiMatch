@@ -20,7 +20,7 @@ from main.gametimer import GameTimer
 class GameScene(Scene):
     BACKGROUND = (153,255,255)
     def ready(self, *args, **kwargs):
-        self.num_players = kwargs.get('players', 1)
+        self.num_players = kwargs.get('players', 4)
         self.timer = GameTimer()
         self.sequence_manager = SceneManager()
         self.sequence_manager.set_scenes({'ready':ReadySequence(self),
@@ -32,6 +32,7 @@ class GameScene(Scene):
         self.sequence_manager.change_scene('ready')
         self.timer.play()
     def update(self):
+        self.bgm.play()
         self.sequence_manager.current_scene.update()
         super(GameScene, self).update()
     def draw(self):
@@ -61,7 +62,6 @@ class ReadySequence(Sequence):
         self.ready_timer = Timer(settings.FPS*3)
         self.ready_timer.play()
     def update(self):
-        self.scene.bgm.play()
         self.ready_timer.tick()
         if self.ready_timer.now == settings.FPS*1:
             self.text.ainfo.index = 0
@@ -86,7 +86,6 @@ class GameSequence(Sequence):
         self.attach_sound = Sound(u"../resources/sound/attach.wav")
         self.pause_sound = Sound(u"../resources/sound/pause.wav")
     def update(self):
-        self.scene.bgm.play()
         if self.text.y > -360:
             self.text.y -=30
         if self.scene.timer.is_over():
@@ -130,14 +129,15 @@ class ResultSequence(Sequence):
         self.result_timer.play()
     def update(self):
         self.result_timer.tick()
-        if self.result_timer.now == settings.FPS*2.5:
+        if self.result_timer.is_active() and self.result_timer.is_over():
             self.text.ainfo.index = -1
-            self.scene.bgm.fadeout(100)
+            self.scene.bgm.change(u"../resources/music/fanfare_intro.wav", -1, u"../resources/music/fanfare_loop.wav", 100)
             self.win.ainfo.index = self.winner.number
+            self.result_timer.stop()
         for player in self.scene.world.players:
             p = player.poll()
             u"""p=3のとき、リプレイ"""
-            if self.result_timer.is_over() and p == 3:
+            if not self.result_timer.is_active() and p == 3:
                 self.scene.bgm.change(u"../resources/music/main_intro.wav", -1, u"../resources/music/main_loop.wav")
                 self.scene.sequence_manager.change_scene('ready')
         #ToDo Retry or Title
@@ -159,7 +159,6 @@ class PauseSequence(Sequence):
         self.text.draw()
         return rect
     def update(self):
-        self.scene.bgm.play()
         for player in self.scene.world.players:
             p = player.poll()
             u"""p=0のとき、何もしない、p=1のとき、右回転、p=2のとき設置、p=-1のとき左回転p=3のときポーズ"""
