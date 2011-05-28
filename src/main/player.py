@@ -35,7 +35,7 @@ class Player(Panel):
                                   'c':11,
                                   'START':4
                                   }}
-    PAD_TYPE = [0, 0, 1, 1]
+    PAD_TYPE = [0, 0, 0, 1]
     KEYMAPPINGS_PADS = [{'up':0,
                         'down':1,
                         'right':2,

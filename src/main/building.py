@@ -43,6 +43,28 @@ class Tent(Building):
     IMAGEPATH = u"../resources/image/main/buildings/tent.png"
     LEVEL = 1
     OFFSET = (0, 25)
+
+class Cave(Building):
+    IMAGEPATH = u"../resources/image/main/buildings/cave.png"
+    IMAGEWIDTH = 100
+    IMAGEHEIGHT = 100
+    LEVEL = 1
+    OFFSET = (15, 30)
+
+class Home1(Building):
+    IMAGEPATH = u"../resources/image/main/buildings/home1.png"
+    IMAGEWIDTH = 100
+    IMAGEHEIGHT = 100
+    LEVEL = 1
+    OFFSET = (15, 30)
+
+class Home2(Building):
+    IMAGEPATH = u"../resources/image/main/buildings/home2.png"
+    IMAGEWIDTH = 100
+    IMAGEHEIGHT = 100
+    LEVEL = 1
+    OFFSET = (15, 30)
+
     
 class WoodCabin(Building):
     IMAGEPATH = u"../resources/image/main/buildings/woodcabin.png"
@@ -62,6 +84,27 @@ class BuildingBrown(Building):
     IMAGEHEIGHT = 200
     LEVEL = 3
     OFFSET = (40, 100)
+    
+class Tower(Building):
+    IMAGEPATH = u"../resources/image/main/buildings/tower.png"
+    IMAGEWIDTH = 200
+    IMAGEHEIGHT = 350
+    LEVEL = 4
+    OFFSET = (60, 250)    
+    
+class Wheel(Building):
+    IMAGEPATH = u"../resources/image/main/buildings/wheel.png"
+    IMAGEWIDTH = 150
+    IMAGEHEIGHT = 200
+    LEVEL = 4
+    OFFSET = (30, 120)
+
+class SkyScraper(Building):
+    IMAGEPATH = u"../resources/image/main/buildings/skyscraper.png"
+    IMAGEWIDTH = 200
+    IMAGEHEIGHT = 400
+    LEVEL = 4
+    OFFSET = (60, 300)
     
 class Kawaztan(Building):
     IMAGEPATH = u"../resources/image/main/buildings/kawaztan.png"
@@ -83,9 +126,16 @@ class OrientalCastle(Building):
     IMAGEHEIGHT = 350
     LEVEL = 5
     OFFSET = (110, 170)
-    
-LEVEL_BUILDINGS = ((Tent,), 
-                   (WoodCabin,),
+
+class Babel(Building):
+    IMAGEPATH = u"../resources/image/main/buildings/babel.png"
+    IMAGEWIDTH = 220
+    IMAGEHEIGHT = 280
+    LEVEL = 5
+    OFFSET = (75, 130)
+
+LEVEL_BUILDINGS = ((Tent, Cave, ), 
+                   (WoodCabin, Home1, Home2),
                    (BuildingWhite, BuildingBrown,),
-                   (Kawaztan,),
-                   (Castle, OrientalCastle))
+                   (Kawaztan, SkyScraper, Wheel, Tower ),
+                   (Babel, Castle, ))

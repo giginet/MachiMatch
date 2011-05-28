@@ -50,7 +50,7 @@ class Sequence(Scene):
         self.text.y = settings.SCREENHEIGHT/2-180
 class ReadySequence(Sequence):
     def ready(self):
-        self.scene.world = World(players=self.scene.num_players)
+        self.scene.world = World(players=self.scene.num_players, timer=self.scene.timer)
         self.scene.navigations = []
         for player in self.scene.world.players:
             self.scene.navigations.append(Navigation(player))

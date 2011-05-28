@@ -26,6 +26,7 @@ class City(object):
         self.territories = []
         self.flow_timer = Timer(settings.FPS*settings.FLOW_POPULATION_YEAR)
         self.building_matrix = [[None for col in range(settings.STAGE_HEIGHT)] for row in range(settings.STAGE_WIDTH)] # 二次配列を生成してNoneで初期化
+        #self._constract_building(Tower, 0, 0)
     def increase_population(self, p=None):
         u"""人口を増やす。その後、レベルアップの判定をする
             増える人口はレベルに依存する。 p*2^(lv-1)

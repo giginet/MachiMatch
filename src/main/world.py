@@ -17,6 +17,7 @@ class World(object):
     def __init__(self, *args, **kwargs):
         self.players = []
         self._player_count = kwargs.get('players')
+        self.timer = kwargs.get('timer')
         self.refresh()
     def refresh(self):
         u"""ステージをリセットする"""

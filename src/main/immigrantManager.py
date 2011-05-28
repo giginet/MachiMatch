@@ -27,7 +27,8 @@ class ImmigrantManager(object):
         del self.immigrants[self.immigrants.index(immigrant)]
     def update(self):
         map(lambda immigrant: immigrant.update(), self.immigrants)
-        r = random.randint(0, settings.IMMIGRANT_POP_RATE)
+        pop_rate = self.world.timer.now/30
+        r = random.randint(0, pop_rate)
         if r==0:
             x = random.randint(0, settings.STAGE_WIDTH-1)
             at = Vector(x, settings.STAGE_HEIGHT-1)

@@ -24,3 +24,6 @@ class GameTimer(Number):
         return self.timer.is_over()
     def reset(self):
         self.timer.reset()
+    @property
+    def now(self):
+        return self.n
