@@ -21,7 +21,7 @@ from pywaz.utils.timer import Timer
 class MainMenuScene(Scene):
     BACKGROUND = (255,255,255)
     CURSOR_BORDER = 10 # カーソルを表す画像が、選択肢を表す画像からどれだけずらして配置されるか
-    IMAGE_PATH = "../resources/image/menu"
+    IMAGE_PATH = r"../resources/image/menu"
     KEY_REPEAT_TIME = 0.2 # 何秒以内の間なら、キーが押され続けていても連打とみなさないか
     
     # 2Players, 3Players, 4Playersの画像を読み込む
@@ -72,14 +72,15 @@ class MainMenuScene(Scene):
         self.joypads = [] 
         for i in xrange(0, self.num_joypads):
             self.joypads.append(JoyPad(i))
-        self.logo = Image(os.path.join(self.IMAGE_PATH, "kawaz.png"), alpha=False)
+        self.background = Image(os.path.join(self.IMAGE_PATH, "background3.png"), alpha=False)
+        self.logo = Image(os.path.join(self.IMAGE_PATH, "logo.png"))
         self.config = Image(os.path.join(self.IMAGE_PATH, "config.png"), alpha=False)
         self.exit = Image(os.path.join(self.IMAGE_PATH, "exit.png"), alpha=False)
         self.cursor = Image(os.path.join(self.IMAGE_PATH, "cursor.png"), alpha=True)
         self.cursor_threshold = [[0, 0], ] * self.num_joypads # ジョイスティックを倒したときに、axisがどれくらい倒れたかの総量
         self.cursor_move = [False] * self.num_joypads
         self.load_player_selection(self.num_joypads)
-        self.logo.x = 353; self.logo.y = 260
+        self.logo.x = 280; self.logo.y = 20
         self.player2.x = 160; self.player2.y = 400
         self.player3.x = 380; self.player3.y = 400
         self.player4.x = 600; self.player4.y = 400
@@ -99,7 +100,7 @@ class MainMenuScene(Scene):
         self.cursor_logical_x = 0;
         self.cursor_logical_y = 0;
         self.set_cursor_pos(0, 0)
-        
+        self.sprites.add(self.background)
         self.sprites.add(self.logo)
         self.sprites.add(self.player2)
         self.sprites.add(self.player3)
