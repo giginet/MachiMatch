@@ -134,8 +134,16 @@ class Babel(Building):
     LEVEL = 5
     OFFSET = (75, 130)
 
+class Laputa(Building):
+    IMAGEPATH = u"../resources/image/main/buildings/laputa.png"
+    IMAGEWIDTH = 250
+    IMAGEHEIGHT = 300
+    LEVEL = 5
+    OFFSET = (90, 155)
+
+
 LEVEL_BUILDINGS = ((Tent, Cave, ), 
                    (WoodCabin, Home1, Home2),
                    (BuildingWhite, BuildingBrown,),
                    (Kawaztan, SkyScraper, Wheel, Tower ),
-                   (Babel, Castle, ))
+                   (Babel, Castle, Laputa))

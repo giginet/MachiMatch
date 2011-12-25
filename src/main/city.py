@@ -8,7 +8,7 @@ import random
 from pywaz.utils.timer import Timer
 from pywaz.utils.vector import Vector
 from pywaz.mixer.sound import Sound
-from main.building import *;
+from main.building import *
 class City(object):
     u"""街クラス。人口や発展状況などを管理する"""    
     def __init__(self, owner, world):
@@ -26,7 +26,7 @@ class City(object):
         self.territories = []
         self.flow_timer = Timer(settings.FPS*settings.FLOW_POPULATION_YEAR)
         self.building_matrix = [[None for col in range(settings.STAGE_HEIGHT)] for row in range(settings.STAGE_WIDTH)] # 二次配列を生成してNoneで初期化
-        #self._constract_building(Tower, 0, 0)
+        #self._constract_building(Laputa, 0, 0)
     def increase_population(self, p=None):
         u"""人口を増やす。その後、レベルアップの判定をする
             増える人口はレベルに依存する。 p*2^(lv-1)
@@ -40,7 +40,6 @@ class City(object):
         if self.level < 5 and settings.LEVELUP_BORDERLINES[self.level] < self.population:
             self.levelup_sound.play()
             self.level +=1
-            print "LevelUp! %d" % self.level
         else:
             self.increase_sound.play()
     def decrease_population(self, p):
